@@ -590,11 +590,11 @@ namespace SwiftOpsToolbox
             }
         }
 
-        private void TierComboBox_Selected(object sender, RoutedEventArgs e)
+        private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
             {
-                var tierName = item.Tag?.ToString();
+                var tierName = item.Content?.ToString();
                 if (!string.IsNullOrEmpty(tierName))
                 {
                     vm.ChangeTierCommand?.Execute(tierName);

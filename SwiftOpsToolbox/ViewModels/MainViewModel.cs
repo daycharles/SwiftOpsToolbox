@@ -27,7 +27,7 @@ namespace SwiftOpsToolbox.ViewModels
 
         // SFTP service
         private readonly ISftpService _sftpService;
-        public ISftpService SftpService => _sftpService ?? (ISftpService)_sftpService; // will be assigned in constructor
+        public ISftpService SftpService => _sftpService;
 
         // Settings service for tier and feature management
         private readonly ISettingsService _settingsService;
@@ -186,9 +186,21 @@ namespace SwiftOpsToolbox.ViewModels
         public bool ClipboardVisible => _settingsService?.Settings?.Features?.ClipboardHistoryEnabled ?? true;
         public bool SftpVisible => _settingsService?.Settings?.Features?.SftpEnabled ?? false;
         
-        // Current tier display
+        // Current tier display and setter
         public string CurrentTierName => _settingsService?.Settings?.Tier.ToString() ?? "Free";
-        public UserTier CurrentTier => _settingsService?.Settings?.Tier ?? UserTier.Free;
+        
+        public UserTier CurrentTier 
+        { 
+            get => _settingsService?.Settings?.Tier ?? UserTier.Free;
+            set
+            {
+                if (_settingsService?.Settings?.Tier != value)
+                {
+                    _settingsService.SetTier(value);
+                    RefreshFeatureVisibility();
+                }
+            }
+        }
 
         public ICommand SaveSettingsCommand { get; }
         public ICommand OpenLogCommand { get; }

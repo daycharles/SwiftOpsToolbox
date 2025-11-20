@@ -486,11 +486,11 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                             <TextBlock Text="Switch Tier (Demo):" Foreground="{StaticResource MutedText}" Width="120" VerticalAlignment="Center" />
-                                            <ComboBox Width="200" SelectedValue="{Binding CurrentTierName, Mode=OneWay}">
-                                                <ComboBoxItem Content="Free" Tag="Free" Selected="TierComboBox_Selected" />
-                                                <ComboBoxItem Content="Pro" Tag="Pro" Selected="TierComboBox_Selected" />
-                                                <ComboBoxItem Content="Business" Tag="Business" Selected="TierComboBox_Selected" />
-                                                <ComboBoxItem Content="Enterprise" Tag="Enterprise" Selected="TierComboBox_Selected" />
+                                            <ComboBox Width="200" SelectedValue="{Binding CurrentTierName, Mode=TwoWay}" SelectionChanged="TierComboBox_SelectionChanged">
+                                                <ComboBoxItem Content="Free" />
+                                                <ComboBoxItem Content="Pro" />
+                                                <ComboBoxItem Content="Business" />
+                                                <ComboBoxItem Content="Enterprise" />
                                             </ComboBox>
                                         </StackPanel>
                                         <TextBlock Text="Note: Tier selection is for demonstration purposes only" Foreground="{StaticResource MutedText}" FontSize="11" FontStyle="Italic" Margin="0,8,0,0" />

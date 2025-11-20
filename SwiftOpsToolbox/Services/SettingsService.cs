@@ -1,6 +1,8 @@
 using SwiftOpsToolbox.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 
 namespace SwiftOpsToolbox.Services
@@ -12,10 +14,26 @@ namespace SwiftOpsToolbox.Services
     {
         private readonly string _settingsPath;
         private UserSettings _settings;
+        
+        // Cache PropertyInfo objects for performance
+        private static readonly Dictionary<string, PropertyInfo> _featureFlagProperties;
 
         public UserSettings Settings => _settings;
 
         public event EventHandler? SettingsChanged;
+
+        static SettingsService()
+        {
+            // Initialize property cache once for all instances
+            _featureFlagProperties = new Dictionary<string, PropertyInfo>();
+            foreach (var prop in typeof(FeatureFlags).GetProperties())
+            {
+                if (prop.PropertyType == typeof(bool))
+                {
+                    _featureFlagProperties[prop.Name] = prop;
+                }
+            }
+        }
 
         public SettingsService()
         {
@@ -104,9 +122,8 @@ namespace SwiftOpsToolbox.Services
                 return false;
             }
 
-            // Use reflection to check the feature flag
-            var property = typeof(FeatureFlags).GetProperty(featureName);
-            if (property != null && property.PropertyType == typeof(bool))
+            // Use cached PropertyInfo for better performance
+            if (_featureFlagProperties.TryGetValue(featureName, out var property))
             {
                 return (bool)(property.GetValue(_settings.Features) ?? false);
             }
