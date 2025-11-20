@@ -85,9 +85,10 @@ namespace SwiftOpsToolbox.Views
             }
 
             int replaceCount = 0;
+            int maxReplacements = 10000; // Safety limit to prevent infinite loops
             _currentPosition = _richTextBox.Document.ContentStart;
 
-            while (true)
+            while (replaceCount < maxReplacements)
             {
                 bool found = FindNext(searchText, ChkMatchCase.IsChecked == true, ChkWholeWord.IsChecked == true);
                 if (!found)
@@ -97,7 +98,14 @@ namespace SwiftOpsToolbox.Views
                 replaceCount++;
             }
 
-            MessageBox.Show($"Replaced {replaceCount} occurrence(s).", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (replaceCount >= maxReplacements)
+            {
+                MessageBox.Show($"Replaced {replaceCount} occurrence(s). Stopped at safety limit.", "Replace All", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                MessageBox.Show($"Replaced {replaceCount} occurrence(s).", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
             _currentPosition = _richTextBox.Document.ContentStart;
         }
 
@@ -148,8 +156,19 @@ namespace SwiftOpsToolbox.Views
                         }
 
                         // Found a match
-                        TextPointer start = position.GetPositionAtOffset(index);
-                        TextPointer end = start.GetPositionAtOffset(searchText.Length);
+                        TextPointer? start = position.GetPositionAtOffset(index);
+                        if (start == null)
+                        {
+                            position = position.GetNextContextPosition(LogicalDirection.Forward);
+                            continue;
+                        }
+
+                        TextPointer? end = start.GetPositionAtOffset(searchText.Length);
+                        if (end == null)
+                        {
+                            position = position.GetNextContextPosition(LogicalDirection.Forward);
+                            continue;
+                        }
                         
                         _richTextBox.Selection.Select(start, end);
                         _richTextBox.Focus();

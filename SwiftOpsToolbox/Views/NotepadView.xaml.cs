@@ -501,11 +501,11 @@ namespace SwiftOpsToolbox.Views
         }
 
         // Command helper methods for keyboard shortcuts
-        private void NewFile(object? parameter) => BtnNew_Click(null, new RoutedEventArgs());
-        private void OpenFile(object? parameter) => BtnOpen_Click(null, new RoutedEventArgs());
-        private void SaveFile(object? parameter) => BtnSave_Click(null, new RoutedEventArgs());
-        private void Find(object? parameter) => BtnFind_Click(null, new RoutedEventArgs());
-        private void Replace(object? parameter) => BtnReplace_Click(null, new RoutedEventArgs());
+        private void NewFile(object? parameter) => BtnNew_Click(null, EventArgs.Empty as RoutedEventArgs ?? new RoutedEventArgs());
+        private void OpenFile(object? parameter) => BtnOpen_Click(null, EventArgs.Empty as RoutedEventArgs ?? new RoutedEventArgs());
+        private void SaveFile(object? parameter) => BtnSave_Click(null, EventArgs.Empty as RoutedEventArgs ?? new RoutedEventArgs());
+        private void Find(object? parameter) => BtnFind_Click(null, EventArgs.Empty as RoutedEventArgs ?? new RoutedEventArgs());
+        private void Replace(object? parameter) => BtnReplace_Click(null, EventArgs.Empty as RoutedEventArgs ?? new RoutedEventArgs());
     }
 
     /// <summary>

@@ -89,8 +89,19 @@ namespace SwiftOpsToolbox.Views
                         }
 
                         // Found a match
-                        TextPointer start = position.GetPositionAtOffset(index);
-                        TextPointer end = start.GetPositionAtOffset(searchText.Length);
+                        TextPointer? start = position.GetPositionAtOffset(index);
+                        if (start == null)
+                        {
+                            position = position.GetNextContextPosition(LogicalDirection.Forward);
+                            continue;
+                        }
+
+                        TextPointer? end = start.GetPositionAtOffset(searchText.Length);
+                        if (end == null)
+                        {
+                            position = position.GetNextContextPosition(LogicalDirection.Forward);
+                            continue;
+                        }
                         
                         _richTextBox.Selection.Select(start, end);
                         _richTextBox.Focus();
