@@ -62,8 +62,12 @@
                     <button class="btn-close" @onclick="CloseModal">×</button>
                 </div>
                 <div class="modal-body">
+                    @if (!string.IsNullOrWhiteSpace(ValidationError))
+                    {
+                        <div class="alert alert-danger">@ValidationError</div>
+                    }
                     <div class="form-group">
-                        <label>Title:</label>
+                        <label>Title: <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" @bind="EditingEvent.Title" />
                     </div>
                     <div class="form-group">
@@ -142,12 +146,13 @@
     private DateTime? SelectedDay = null;
     private bool ShowEventModal = false;
     private CalendarEvent EditingEvent = new();
+    private string ValidationError = string.Empty;
 
     private class CalendarDay
     {
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
-        public IEnumerable<CalendarEvent> Events { get; set; } = Enumerable.Empty<CalendarEvent>();
+        public List<CalendarEvent> Events { get; set; } = new();
     }
 
     private IEnumerable<CalendarDay> GetCalendarDays()
@@ -161,19 +166,22 @@
         // End on the Saturday after or on the last day of the month
         var endDate = lastDayOfMonth.AddDays(6 - (int)lastDayOfMonth.DayOfWeek);
         
+        // Batch load all events for the visible date range
+        var allEventsInRange = CalendarService.GetEventsForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
+        
         var days = new List<CalendarDay>();
         var currentDate = startDate;
         
         while (currentDate <= endDate)
         {
             var isCurrentMonth = currentDate.Month == CurrentDate.Month;
-            var events = CalendarService.GetEventsForDay(currentDate);
+            var eventsForDay = allEventsInRange.Where(e => e.StartTime.Date == currentDate.Date).ToList();
             
             days.Add(new CalendarDay
             {
                 Date = currentDate,
                 IsCurrentMonth = isCurrentMonth,
-                Events = events
+                Events = eventsForDay
             });
             
             currentDate = currentDate.AddDays(1);
@@ -228,12 +236,24 @@
     {
         ShowEventModal = false;
         EditingEvent = new();
+        ValidationError = string.Empty;
     }
 
     private void SaveEvent()
     {
         if (string.IsNullOrWhiteSpace(EditingEvent.Title))
+        {
+            ValidationError = "Title is required.";
             return;
+        }
+
+        if (EditingEvent.EndTime < EditingEvent.StartTime)
+        {
+            ValidationError = "End time must be after start time.";
+            return;
+        }
+
+        ValidationError = string.Empty;
 
         if (EditingEvent.Id == 0)
         {

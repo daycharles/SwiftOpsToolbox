@@ -190,6 +190,22 @@
     padding: 20px;
 }
 
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.text-danger {
+    color: #dc3545;
+}
+
 .modal-footer {
     display: flex;
     justify-content: flex-end;
