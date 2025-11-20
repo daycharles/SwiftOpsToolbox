@@ -147,12 +147,44 @@ namespace SwiftOpsToolbox
             try
             {
                 var isLight = (theme ?? "Dark").Equals("Light", System.StringComparison.OrdinalIgnoreCase);
+                var isElectricBlue = (theme ?? "Dark").Equals("Electric Blue", System.StringComparison.OrdinalIgnoreCase);
+                var isVibrantOrange = (theme ?? "Dark").Equals("Vibrant Orange", System.StringComparison.OrdinalIgnoreCase);
 
                 // target colors
-                var targetSurface = isLight ? System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3) : System.Windows.Media.Color.FromRgb(0x0F, 0x0F, 0x10);
-                var targetPanel = isLight ? System.Windows.Media.Color.FromRgb(0xFF, 0xFF, 0xFF) : System.Windows.Media.Color.FromRgb(0x16, 0x16, 0x16);
-                var targetAccent = System.Windows.Media.Color.FromRgb(0x1F, 0x6F, 0xEB);
-                var targetMuted = isLight ? System.Windows.Media.Color.FromRgb(0x66, 0x66, 0x66) : System.Windows.Media.Color.FromRgb(0xA6, 0xA6, 0xA6);
+                System.Windows.Media.Color targetSurface, targetPanel, targetAccent, targetMuted;
+
+                if (isElectricBlue)
+                {
+                    // Electric Blue theme - uses Electric Blue as primary accent with dark backgrounds
+                    targetSurface = System.Windows.Media.Color.FromRgb(0x0F, 0x0F, 0x10);
+                    targetPanel = System.Windows.Media.Color.FromRgb(0x16, 0x16, 0x16);
+                    targetAccent = System.Windows.Media.Color.FromRgb(0x00, 0x7B, 0xFF); // Electric Blue
+                    targetMuted = System.Windows.Media.Color.FromRgb(0xA6, 0xA6, 0xA6);
+                }
+                else if (isVibrantOrange)
+                {
+                    // Vibrant Orange theme - uses Vibrant Orange as primary accent with dark backgrounds
+                    targetSurface = System.Windows.Media.Color.FromRgb(0x0F, 0x0F, 0x10);
+                    targetPanel = System.Windows.Media.Color.FromRgb(0x16, 0x16, 0x16);
+                    targetAccent = System.Windows.Media.Color.FromRgb(0xFF, 0x6F, 0x00); // Vibrant Orange
+                    targetMuted = System.Windows.Media.Color.FromRgb(0xA6, 0xA6, 0xA6);
+                }
+                else if (isLight)
+                {
+                    // Light theme
+                    targetSurface = System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
+                    targetPanel = System.Windows.Media.Color.FromRgb(0xFF, 0xFF, 0xFF);
+                    targetAccent = System.Windows.Media.Color.FromRgb(0x00, 0x7B, 0xFF); // Electric Blue
+                    targetMuted = System.Windows.Media.Color.FromRgb(0x66, 0x66, 0x66);
+                }
+                else
+                {
+                    // Dark theme (default)
+                    targetSurface = System.Windows.Media.Color.FromRgb(0x0F, 0x0F, 0x10);
+                    targetPanel = System.Windows.Media.Color.FromRgb(0x16, 0x16, 0x16);
+                    targetAccent = System.Windows.Media.Color.FromRgb(0x00, 0x7B, 0xFF); // Electric Blue
+                    targetMuted = System.Windows.Media.Color.FromRgb(0xA6, 0xA6, 0xA6);
+                }
 
                 // prefer updating the Window resources so XAML StaticResource lookups pick up changes
                 AnimateResourceBrushTo(this.Resources, "SurfaceBrush", targetSurface);

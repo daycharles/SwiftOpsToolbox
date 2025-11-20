@@ -12,10 +12,17 @@
         Background="#0F0F10">
 
     <Window.Resources>
-        <!-- Dark theme resources -->
+        <!-- New Color Palette -->
+        <SolidColorBrush x:Key="ElectricBlue" Color="#007BFF" />
+        <SolidColorBrush x:Key="VibrantOrange" Color="#FF6F00" />
+        <SolidColorBrush x:Key="DarkGray" Color="#333333" />
+        <SolidColorBrush x:Key="LightGray" Color="#F5F5F5" />
+        <SolidColorBrush x:Key="White" Color="#FFFFFF" />
+        
+        <!-- Dark theme resources (updated with new palette) -->
         <SolidColorBrush x:Key="SurfaceBrush" Color="#0F0F10" />
         <SolidColorBrush x:Key="PanelBrush" Color="#161616" />
-        <SolidColorBrush x:Key="AccentBrush" Color="#1F6FEB" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#007BFF" />
         <SolidColorBrush x:Key="MutedText" Color="#A6A6A6" />
 
         <!-- Simple card style -->
@@ -70,7 +77,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Vertical left nav (compact) -->
-        <DockPanel Grid.Column="0" Background="#0B2A44">
+        <DockPanel Grid.Column="0" Background="{StaticResource DarkGray}">
             <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="6">
                 <Button x:Name="BtnTasks" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Home">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -184,7 +191,7 @@
                                                 <TextBlock Text="Memory:" Foreground="{StaticResource MutedText}" Width="80" />
                                                 <TextBlock Text="{Binding AppMemoryMb, StringFormat={}{0} MB}" Foreground="White" />
                                             </StackPanel>
-                                            <Button Content="Refresh Weather" Width="160" Height="28" Margin="0,8,0,0" Command="{Binding RefreshWeatherCommand}" />
+                                            <Button Content="Refresh Weather" Width="160" Height="28" Margin="0,8,0,0" Command="{Binding RefreshWeatherCommand}" Background="{StaticResource ElectricBlue}" Foreground="White" BorderThickness="0" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -372,13 +379,13 @@
                                 <StackPanel>
                                     <TextBlock Text="Events" Foreground="White" FontSize="14" FontWeight="SemiBold" />
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,6">
-                                        <Button x:Name="BtnAddEvent" Width="36" Height="28" Margin="2" ToolTip="Add Event">
+                                        <Button x:Name="BtnAddEvent" Width="36" Height="28" Margin="2" ToolTip="Add Event" Background="{StaticResource ElectricBlue}" BorderThickness="0">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE710;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
                                         <Button x:Name="BtnEditEvent" Width="36" Height="28" Margin="2" ToolTip="Edit Event">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
-                                        <Button x:Name="BtnDeleteEvent" Width="36" Height="28" Margin="2" ToolTip="Delete Event">
+                                        <Button x:Name="BtnDeleteEvent" Width="36" Height="28" Margin="2" ToolTip="Delete Event" Background="{StaticResource VibrantOrange}" BorderThickness="0">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
                                     </StackPanel>
@@ -399,7 +406,7 @@
 
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                 <TextBox Width="300" Height="32" Margin="0,0,8,0" Text="{Binding NewTodoText, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.Watermark="Add a task..." />
-                                <Button Content="Add" Width="80" Height="32" Command="{Binding AddTodoCommand}" />
+                                <Button Content="Add" Width="80" Height="32" Command="{Binding AddTodoCommand}" Background="{StaticResource ElectricBlue}" Foreground="White" BorderThickness="0" />
                             </StackPanel>
 
                             <ListBox Grid.Row="1" ItemsSource="{Binding ToDoItems}" Background="Transparent" BorderThickness="0">
@@ -426,7 +433,7 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
-                                <Button Content="Clear All" Width="100" Height="28" Command="{Binding ClearClipboardCommand}" />
+                                <Button Content="Clear All" Width="100" Height="28" Command="{Binding ClearClipboardCommand}" Background="{StaticResource VibrantOrange}" Foreground="White" BorderThickness="0" />
                             </StackPanel>
 
                             <ListBox Grid.Row="1" ItemsSource="{Binding ClipboardItems}" Background="Transparent" BorderThickness="0">
@@ -477,8 +484,57 @@
                                     <ComboBox Width="200" SelectedValue="{Binding Theme, Mode=TwoWay}">
                                         <ComboBoxItem Content="Dark" />
                                         <ComboBoxItem Content="Light" />
+                                        <ComboBoxItem Content="Electric Blue" />
+                                        <ComboBoxItem Content="Vibrant Orange" />
                                     </ComboBox>
                                 </StackPanel>
+
+                                <!-- Color Palette Preview -->
+                                <Border Background="#1A1A1A" CornerRadius="6" Padding="12" Margin="0,12,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="New Color Palette" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                            <Border Background="{StaticResource ElectricBlue}" Width="40" Height="40" CornerRadius="4" Margin="0,0,8,0" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Electric Blue" Foreground="White" FontSize="12" />
+                                                <TextBlock Text="#007BFF - Primary" Foreground="{StaticResource MutedText}" FontSize="10" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                            <Border Background="{StaticResource VibrantOrange}" Width="40" Height="40" CornerRadius="4" Margin="0,0,8,0" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Vibrant Orange" Foreground="White" FontSize="12" />
+                                                <TextBlock Text="#FF6F00 - Accent" Foreground="{StaticResource MutedText}" FontSize="10" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                            <Border Background="{StaticResource DarkGray}" Width="40" Height="40" CornerRadius="4" Margin="0,0,8,0" BorderBrush="{StaticResource White}" BorderThickness="1" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Dark Gray" Foreground="White" FontSize="12" />
+                                                <TextBlock Text="#333333 - Text/BG" Foreground="{StaticResource MutedText}" FontSize="10" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                            <Border Background="{StaticResource LightGray}" Width="40" Height="40" CornerRadius="4" Margin="0,0,8,0" BorderBrush="{StaticResource DarkGray}" BorderThickness="1" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Light Gray" Foreground="White" FontSize="12" />
+                                                <TextBlock Text="#F5F5F5 - Neutral BG" Foreground="{StaticResource MutedText}" FontSize="10" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                            <Border Background="{StaticResource White}" Width="40" Height="40" CornerRadius="4" Margin="0,0,8,0" BorderBrush="{StaticResource DarkGray}" BorderThickness="1" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="White" Foreground="White" FontSize="12" />
+                                                <TextBlock Text="#FFFFFF - Contrast" Foreground="{StaticResource MutedText}" FontSize="10" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
                                     <TextBlock Text="Default View:" Foreground="{StaticResource MutedText}" Width="120" VerticalAlignment="Center" />
@@ -500,7 +556,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,12,0,0">
-                                    <Button Content="Save Settings" Width="120" Height="32" Command="{Binding SaveSettingsCommand}" />
+                                    <Button Content="Save Settings" Width="120" Height="32" Command="{Binding SaveSettingsCommand}" Background="{StaticResource ElectricBlue}" Foreground="White" BorderThickness="0" />
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -522,7 +578,7 @@
                         <!-- Add todo input in agenda -->
                         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,12">
                             <TextBox Width="200" Height="30" Text="{Binding NewTodoText, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.Watermark="Add a custom todo..." />
-                            <Button Content="Add" Width="80" Height="30" Margin="8,0,0,0" Command="{Binding AddTodoCommand}" />
+                            <Button Content="Add" Width="80" Height="30" Margin="8,0,0,0" Command="{Binding AddTodoCommand}" Background="{StaticResource ElectricBlue}" Foreground="White" BorderThickness="0" />
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" VerticalAlignment="Top">
