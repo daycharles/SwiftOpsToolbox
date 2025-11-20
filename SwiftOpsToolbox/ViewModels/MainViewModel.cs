@@ -27,7 +27,11 @@ namespace SwiftOpsToolbox.ViewModels
 
         // SFTP service
         private readonly ISftpService _sftpService;
-        public ISftpService SftpService => _sftpService ?? (ISftpService)_sftpService; // will be assigned in constructor
+        public ISftpService SftpService => _sftpService;
+
+        // Settings service for tier and feature management
+        private readonly ISettingsService _settingsService;
+        public ISettingsService SettingsService => _settingsService;
 
         public ICommand StartIndexingCommand { get; }
         public ICommand StartIndexRootsCommand { get; }
@@ -174,8 +178,33 @@ namespace SwiftOpsToolbox.ViewModels
         private ObservableCollection<string> _indexedRoots = new ObservableCollection<string>();
         public ObservableCollection<string> IndexedRoots { get => _indexedRoots; set => SetProperty(ref _indexedRoots, value); }
 
+        // Feature visibility properties based on user tier
+        public bool CalendarVisible => _settingsService?.Settings?.Features?.CalendarEnabled ?? true;
+        public bool TodoListVisible => _settingsService?.Settings?.Features?.TodoListEnabled ?? true;
+        public bool NotepadVisible => _settingsService?.Settings?.Features?.NotepadEnabled ?? true;
+        public bool FileSearchVisible => _settingsService?.Settings?.Features?.BasicFileSearchEnabled ?? true;
+        public bool ClipboardVisible => _settingsService?.Settings?.Features?.ClipboardHistoryEnabled ?? true;
+        public bool SftpVisible => _settingsService?.Settings?.Features?.SftpEnabled ?? false;
+        
+        // Current tier display and setter
+        public string CurrentTierName => _settingsService?.Settings?.Tier.ToString() ?? "Free";
+        
+        public UserTier CurrentTier 
+        { 
+            get => _settingsService?.Settings?.Tier ?? UserTier.Free;
+            set
+            {
+                if (_settingsService?.Settings?.Tier != value)
+                {
+                    _settingsService.SetTier(value);
+                    RefreshFeatureVisibility();
+                }
+            }
+        }
+
         public ICommand SaveSettingsCommand { get; }
         public ICommand OpenLogCommand { get; }
+        public ICommand ChangeTierCommand { get; }
 
         private readonly string _persistencePath;
         private readonly string _settingsPath;
@@ -185,6 +214,11 @@ namespace SwiftOpsToolbox.ViewModels
         {
             _clipboardService = new ClipboardService();
             _clipboardService.Start();
+
+            // Initialize settings service for tier and feature management
+            _settingsService = new SettingsService();
+            _settingsService.Load();
+            _settingsService.SettingsChanged += OnSettingsServiceChanged;
 
             // file indexer
             _fileIndexService = new FileIndexService();
@@ -248,6 +282,7 @@ namespace SwiftOpsToolbox.ViewModels
             RefreshDashboardCommand = new RelayCommand(RefreshDashboard);
 
             SaveSettingsCommand = new RelayCommand(SaveSettings);
+            ChangeTierCommand = new RelayCommand<string>(ChangeTier);
 
             // persistence path in AppData
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -292,10 +327,50 @@ namespace SwiftOpsToolbox.ViewModels
         // event raised when settings are saved (so UI can react)
         public event System.EventHandler? SettingsSaved;
 
+        private void OnSettingsServiceChanged(object? sender, EventArgs e)
+        {
+            // When settings service changes (e.g., tier updated), refresh UI bindings
+            RefreshFeatureVisibility();
+            SettingsSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RefreshFeatureVisibility()
+        {
+            OnPropertyChanged(nameof(CalendarVisible));
+            OnPropertyChanged(nameof(TodoListVisible));
+            OnPropertyChanged(nameof(NotepadVisible));
+            OnPropertyChanged(nameof(FileSearchVisible));
+            OnPropertyChanged(nameof(ClipboardVisible));
+            OnPropertyChanged(nameof(SftpVisible));
+            OnPropertyChanged(nameof(CurrentTierName));
+            OnPropertyChanged(nameof(CurrentTier));
+        }
+
+        private void ChangeTier(string? tierName)
+        {
+            if (string.IsNullOrWhiteSpace(tierName)) return;
+            
+            if (System.Enum.TryParse<UserTier>(tierName, true, out var tier))
+            {
+                _settingsService.SetTier(tier);
+                RefreshFeatureVisibility();
+            }
+        }
+
         private void SaveSettings()
         {
             try
             {
+                // Update the settings service with current UI preferences
+                _settingsService.Settings.Theme = this.Theme;
+                _settingsService.Settings.StartOnCalendar = this.StartOnCalendar;
+                _settingsService.Settings.Use24Hour = this.Use24Hour;
+                _settingsService.Settings.DefaultView = this.DefaultView;
+                
+                // Save through settings service (will trigger SettingsChanged event)
+                _settingsService.Save();
+
+                // Also save to legacy settings file for backward compatibility
                 var obj = new { Theme = this.Theme, StartOnCalendar = this.StartOnCalendar, Use24Hour = this.Use24Hour, DefaultView = this.DefaultView, IndexedRoots = this.IndexedRoots };
                 var json = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(_settingsPath, json);
@@ -322,9 +397,6 @@ namespace SwiftOpsToolbox.ViewModels
                     }
                 }
                 catch { }
-
-                // raise SettingsSaved so host can apply theme / other runtime changes
-                SettingsSaved?.Invoke(this, System.EventArgs.Empty);
             }
             catch { }
         }
@@ -333,6 +405,16 @@ namespace SwiftOpsToolbox.ViewModels
         {
             try
             {
+                // Load from settings service first (has tier and feature flags)
+                if (_settingsService?.Settings != null)
+                {
+                    Theme = _settingsService.Settings.Theme;
+                    StartOnCalendar = _settingsService.Settings.StartOnCalendar;
+                    Use24Hour = _settingsService.Settings.Use24Hour;
+                    DefaultView = _settingsService.Settings.DefaultView;
+                }
+
+                // Also load from legacy settings file for backward compatibility
                 if (File.Exists(_settingsPath))
                 {
                     var json = File.ReadAllText(_settingsPath);
