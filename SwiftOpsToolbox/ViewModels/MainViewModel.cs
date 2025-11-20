@@ -192,6 +192,7 @@ namespace SwiftOpsToolbox.ViewModels
 
         public ICommand SaveSettingsCommand { get; }
         public ICommand OpenLogCommand { get; }
+        public ICommand ChangeTierCommand { get; }
 
         private readonly string _persistencePath;
         private readonly string _settingsPath;
@@ -269,6 +270,7 @@ namespace SwiftOpsToolbox.ViewModels
             RefreshDashboardCommand = new RelayCommand(RefreshDashboard);
 
             SaveSettingsCommand = new RelayCommand(SaveSettings);
+            ChangeTierCommand = new RelayCommand<string>(ChangeTier);
 
             // persistence path in AppData
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -330,6 +332,17 @@ namespace SwiftOpsToolbox.ViewModels
             OnPropertyChanged(nameof(SftpVisible));
             OnPropertyChanged(nameof(CurrentTierName));
             OnPropertyChanged(nameof(CurrentTier));
+        }
+
+        private void ChangeTier(string? tierName)
+        {
+            if (string.IsNullOrWhiteSpace(tierName)) return;
+            
+            if (System.Enum.TryParse<UserTier>(tierName, true, out var tier))
+            {
+                _settingsService.SetTier(tier);
+                RefreshFeatureVisibility();
+            }
         }
 
         private void SaveSettings()

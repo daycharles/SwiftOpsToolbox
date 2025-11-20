@@ -589,5 +589,17 @@ namespace SwiftOpsToolbox
                 }
             }
         }
+
+        private void TierComboBox_Selected(object sender, RoutedEventArgs e)
+        {
+            if (sender is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var tierName = item.Tag?.ToString();
+                if (!string.IsNullOrEmpty(tierName))
+                {
+                    vm.ChangeTierCommand?.Execute(tierName);
+                }
+            }
+        }
     }
 }
