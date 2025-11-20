@@ -390,6 +390,7 @@ namespace SwiftOpsToolbox
             var clipboardMode = this.FindName("ClipboardModePanel") as FrameworkElement;
             var notepadMode = this.FindName("NotepadModePanel") as FrameworkElement;
             var settingsMode = this.FindName("SettingsModePanel") as FrameworkElement;
+            var searchMode = this.FindName("SearchModePanel") as FrameworkElement;
             var homePanel = this.FindName("HomePanel") as FrameworkElement;
             var agenda = this.FindName("AgendaPanel") as FrameworkElement;
 
@@ -405,6 +406,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     // expand left to full width
@@ -416,6 +418,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Visible;
                     // restore split 3*:2*
@@ -426,6 +429,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Visible;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     // expand left
@@ -436,6 +440,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Visible;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     // expand left (remove agenda)
@@ -446,6 +451,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Visible;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     // expand left (remove agenda)
@@ -456,6 +462,7 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Visible;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     // expand left (settings take full area)
@@ -467,15 +474,16 @@ namespace SwiftOpsToolbox
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
+                    if (searchMode != null) searchMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
                     if (leftCol != null && rightCol != null) { leftCol.Width = new GridLength(3, GridUnitType.Star); rightCol.Width = new GridLength(2, GridUnitType.Star); }
                     break;
                 case "Search":
+                    if (homePanel != null) homePanel.Visibility = Visibility.Collapsed;
                     if (calendarMode != null) calendarMode.Visibility = Visibility.Collapsed;
                     if (tasksMode != null) tasksMode.Visibility = Visibility.Collapsed;
                     if (clipboardMode != null) clipboardMode.Visibility = Visibility.Collapsed;
                     if (notepadMode != null) notepadMode.Visibility = Visibility.Collapsed;
-                    var searchMode = this.FindName("SearchModePanel") as FrameworkElement;
                     if (searchMode != null) searchMode.Visibility = Visibility.Visible;
                     if (settingsMode != null) settingsMode.Visibility = Visibility.Collapsed;
                     if (agenda != null) agenda.Visibility = Visibility.Collapsed;
