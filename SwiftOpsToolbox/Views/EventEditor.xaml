@@ -1,0 +1,39 @@
+<Window x:Class="SwiftOpsToolbox.Views.EventEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Event" Height="280" Width="400" WindowStartupLocation="CenterOwner">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="Date" />
+            <DatePicker x:Name="DpDate" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,8">
+            <TextBlock Text="Time (HH:mm)" />
+            <TextBox x:Name="TbTime" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,0,0,8">
+            <TextBlock Text="Title" />
+            <TextBox x:Name="TbTitle" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,0,0,8">
+            <TextBlock Text="Description" />
+            <TextBox x:Name="TbDescription" AcceptsReturn="True" Height="80" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="4">
+            <Button x:Name="BtnOk" Content="OK" Width="80" Margin="4" IsDefault="True" Click="BtnOk_Click" />
+            <Button x:Name="BtnCancel" Content="Cancel" Width="80" Margin="4" IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>
