@@ -2,8 +2,8 @@
 .vs/
 Debug/
 Release/
-obj/
 bin/
+obj/
 
 *.filters
 todo.txt
