@@ -82,28 +82,28 @@ namespace SwiftOpsToolbox
                         ShowCalendarViewMode(vm.DefaultView);
                     }
                 };
-            }
 
-            // Map sidebar buttons to mode panels
-            BtnTasks.Click += (s, e) => ShowView("Home");      // Home -> Home panel
-            BtnCalendar.Click += (s, e) => ShowView("Calendar");
-            BtnClipboard.Click += (s, e) => ShowView("Clipboard");
-            BtnSearch.Click += (s, e) => ShowView("Search");
-            var notepadBtn = this.FindName("BtnNotepad") as System.Windows.Controls.Button;
-            if (notepadBtn != null) notepadBtn.Click += (s, e) => ShowView("Notepad");
-            BtnSettings.Click += (s, e) => ShowView("Settings");     // Settings button opens Settings mode
+                // Map sidebar buttons to mode panels
+                BtnTasks.Click += (s, e) => ShowView("Home");      // Home -> Home panel
+                BtnCalendar.Click += (s, e) => ShowView("Calendar");
+                BtnClipboard.Click += (s, e) => ShowView("Clipboard");
+                BtnSearch.Click += (s, e) => ShowView("Search");
+                var notepadBtn = this.FindName("BtnNotepad") as System.Windows.Controls.Button;
+                if (notepadBtn != null) notepadBtn.Click += (s, e) => ShowView("Notepad");
+                BtnSettings.Click += (s, e) => ShowView("Settings");     // Settings button opens Settings mode
 
-            // Place on a dedicated monitor and maximize
-            PlaceOnDedicatedMonitor();
+                // Place on a dedicated monitor and maximize
+                PlaceOnDedicatedMonitor();
 
-            // Default view - check settings to determine which view to show
-            if (DataContext is ViewModels.MainViewModel viewModel && viewModel.StartOnCalendar)
-            {
-                ShowView("Calendar");
-            }
-            else
-            {
-                ShowView("Home");
+                // Default view - check settings to determine which view to show
+                if (vm.StartOnCalendar)
+                {
+                    ShowView("Calendar");
+                }
+                else
+                {
+                    ShowView("Home");
+                }
             }
 
             // Wire up calendar selection changed
