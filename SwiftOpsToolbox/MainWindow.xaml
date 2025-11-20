@@ -490,7 +490,7 @@
                                 </StackPanel>
 
                                 <!-- Color Palette Preview -->
-                                <Border Background="{StaticResource DarkGray}" CornerRadius="6" Padding="12" Margin="0,12,0,12">
+                                <Border Background="#1A1A1A" CornerRadius="6" Padding="12" Margin="0,12,0,12">
                                     <StackPanel>
                                         <TextBlock Text="New Color Palette" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
                                         
