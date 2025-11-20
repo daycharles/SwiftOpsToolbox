@@ -12,6 +12,10 @@
         Background="#0F0F10">
 
     <Window.Resources>
+        <!-- Converters -->
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+        
         <!-- Dark theme resources -->
         <SolidColorBrush x:Key="SurfaceBrush" Color="#0F0F10" />
         <SolidColorBrush x:Key="PanelBrush" Color="#161616" />
@@ -79,28 +83,28 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnCalendar" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Calendar">
+                <Button x:Name="BtnCalendar" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Calendar" Visibility="{Binding CalendarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE787;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock Text="Calendar" Foreground="White" Opacity="0.95" FontSize="11" HorizontalAlignment="Center" Margin="0,6,0,0" />
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnClipboard" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Clipboard">
+                <Button x:Name="BtnClipboard" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Clipboard" Visibility="{Binding ClipboardVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE8C8;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock Text="Clipboard" Foreground="White" Opacity="0.95" FontSize="11" HorizontalAlignment="Center" Margin="0,6,0,0" />
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnNotepad" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Notepad">
+                <Button x:Name="BtnNotepad" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Notepad" Visibility="{Binding NotepadVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE8A5;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock Text="Notepad" Foreground="White" Opacity="0.95" FontSize="11" HorizontalAlignment="Center" Margin="0,6,0,0" />
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnSearch" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Search">
+                <Button x:Name="BtnSearch" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="88" Height="88" Margin="6" ToolTip="Search" Visibility="{Binding FileSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE8B7;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock Text="Search" Foreground="White" Opacity="0.95" FontSize="11" HorizontalAlignment="Center" Margin="0,6,0,0" />
@@ -471,6 +475,58 @@
                         <Border Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <TextBlock Text="Settings" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8" />
+
+                                <!-- Tier Information -->
+                                <Border Background="#0F0F10" BorderBrush="#222" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="Account Tier" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="Current Plan:" Foreground="{StaticResource MutedText}" Width="120" />
+                                            <TextBlock Text="{Binding CurrentTierName}" Foreground="#1F6FEB" FontWeight="SemiBold" />
+                                        </StackPanel>
+                                        <TextBlock Text="Upgrade to unlock more features" Foreground="{StaticResource MutedText}" FontSize="12" Margin="0,8,0,0" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Feature Visibility -->
+                                <TextBlock Text="Available Features" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <Border Background="#0F0F10" BorderBrush="#222" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding CalendarVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding CalendarVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Calendar &amp; Events" Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding TodoListVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding TodoListVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="To-Do List" Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding NotepadVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding NotepadVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Notepad / Markdown" Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding FileSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding FileSearchVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="File Search" Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding ClipboardVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding ClipboardVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Clipboard History" Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="✓" Foreground="#58A6FF" Width="30" FontWeight="Bold" Visibility="{Binding SftpVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗" Foreground="#8B949E" Width="30" FontWeight="Bold" Visibility="{Binding SftpVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="SFTP Client (Pro+)" Foreground="White" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- General Settings -->
+                                <TextBlock Text="General Settings" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
                                     <TextBlock Text="Theme:" Foreground="{StaticResource MutedText}" Width="120" VerticalAlignment="Center" />
