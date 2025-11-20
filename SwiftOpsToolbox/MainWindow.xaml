@@ -379,13 +379,13 @@
                                 <StackPanel>
                                     <TextBlock Text="Events" Foreground="White" FontSize="14" FontWeight="SemiBold" />
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,6">
-                                        <Button x:Name="BtnAddEvent" Width="36" Height="28" Margin="2" ToolTip="Add Event">
+                                        <Button x:Name="BtnAddEvent" Width="36" Height="28" Margin="2" ToolTip="Add Event" Background="{StaticResource ElectricBlue}" BorderThickness="0">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE710;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
                                         <Button x:Name="BtnEditEvent" Width="36" Height="28" Margin="2" ToolTip="Edit Event">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
-                                        <Button x:Name="BtnDeleteEvent" Width="36" Height="28" Margin="2" ToolTip="Delete Event">
+                                        <Button x:Name="BtnDeleteEvent" Width="36" Height="28" Margin="2" ToolTip="Delete Event" Background="{StaticResource VibrantOrange}" BorderThickness="0">
                                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Button>
                                     </StackPanel>
@@ -433,7 +433,7 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
-                                <Button Content="Clear All" Width="100" Height="28" Command="{Binding ClearClipboardCommand}" />
+                                <Button Content="Clear All" Width="100" Height="28" Command="{Binding ClearClipboardCommand}" Background="{StaticResource VibrantOrange}" Foreground="White" BorderThickness="0" />
                             </StackPanel>
 
                             <ListBox Grid.Row="1" ItemsSource="{Binding ClipboardItems}" Background="Transparent" BorderThickness="0">
