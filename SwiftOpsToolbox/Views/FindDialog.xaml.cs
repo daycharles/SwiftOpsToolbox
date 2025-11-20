@@ -83,7 +83,15 @@ namespace SwiftOpsToolbox.Views
                             if (!isWholeWord)
                             {
                                 // Move position forward and continue searching
-                                position = position.GetPositionAtOffset(index + searchText.Length);
+                                TextPointer? nextPos = position.GetPositionAtOffset(index + searchText.Length);
+                                if (nextPos != null)
+                                {
+                                    position = nextPos;
+                                }
+                                else
+                                {
+                                    position = position.GetNextContextPosition(LogicalDirection.Forward);
+                                }
                                 continue;
                             }
                         }
