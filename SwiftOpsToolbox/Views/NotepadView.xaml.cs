@@ -1,6 +1,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using Markdig;
 using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -15,8 +16,23 @@ namespace SwiftOpsToolbox.Views
         private MarkdownPipeline _markdownPipeline;
         private MarkdownWindow? _popoutWindow;
 
+        // Commands for keyboard shortcuts
+        public ICommand NewCommand { get; }
+        public ICommand OpenCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand FindCommand { get; }
+        public ICommand ReplaceCommand { get; }
+
         public NotepadView()
         {
+            // Initialize commands before InitializeComponent
+            NewCommand = new RelayCommand(NewFile);
+            OpenCommand = new RelayCommand(OpenFile);
+            SaveCommand = new RelayCommand(SaveFile);
+            FindCommand = new RelayCommand(Find);
+            ReplaceCommand = new RelayCommand(Replace);
+
+            DataContext = this;
             InitializeComponent();
 
             _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
@@ -25,6 +41,14 @@ namespace SwiftOpsToolbox.Views
             BtnOpen.Click += BtnOpen_Click;
             BtnSave.Click += BtnSave_Click;
             BtnSaveAs.Click += BtnSaveAs_Click;
+
+            BtnUndo.Click += BtnUndo_Click;
+            BtnRedo.Click += BtnRedo_Click;
+            BtnCut.Click += BtnCut_Click;
+            BtnCopy.Click += BtnCopy_Click;
+            BtnPaste.Click += BtnPaste_Click;
+            BtnFind.Click += BtnFind_Click;
+            BtnReplace.Click += BtnReplace_Click;
 
             BtnBold.Checked += (s, e) => ToggleSelectionFormatting(System.Windows.FontWeights.Bold, null);
             BtnBold.Unchecked += (s, e) => ToggleSelectionFormatting(System.Windows.FontWeights.Normal, null);
@@ -371,6 +395,151 @@ namespace SwiftOpsToolbox.Views
             {
                 rtb.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
             }
+        }
+
+        /// <summary>
+        /// Undo the last action in the active text editor.
+        /// Uses the RichTextBox's built-in Undo command.
+        /// </summary>
+        private void BtnUndo_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb != null && rtb.CanUndo)
+            {
+                rtb.Undo();
+                rtb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Redo the last undone action in the active text editor.
+        /// Uses the RichTextBox's built-in Redo command.
+        /// </summary>
+        private void BtnRedo_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb != null && rtb.CanRedo)
+            {
+                rtb.Redo();
+                rtb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Cut the selected text to the clipboard.
+        /// Uses the ApplicationCommands.Cut command.
+        /// </summary>
+        private void BtnCut_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb != null && !rtb.Selection.IsEmpty)
+            {
+                ApplicationCommands.Cut.Execute(null, rtb);
+                rtb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Copy the selected text to the clipboard.
+        /// Uses the ApplicationCommands.Copy command.
+        /// </summary>
+        private void BtnCopy_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb != null && !rtb.Selection.IsEmpty)
+            {
+                ApplicationCommands.Copy.Execute(null, rtb);
+                rtb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Paste text from the clipboard at the current cursor position.
+        /// Uses the ApplicationCommands.Paste command.
+        /// </summary>
+        private void BtnPaste_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb != null && Clipboard.ContainsText())
+            {
+                ApplicationCommands.Paste.Execute(null, rtb);
+                rtb.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Open the Find dialog to search for text in the active document.
+        /// </summary>
+        private void BtnFind_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb == null) return;
+
+            var dialog = new FindDialog(rtb);
+            dialog.Owner = Window.GetWindow(this);
+            dialog.ShowDialog();
+        }
+
+        /// <summary>
+        /// Open the Find and Replace dialog to search and replace text in the active document.
+        /// </summary>
+        private void BtnReplace_Click(object? sender, RoutedEventArgs e)
+        {
+            var tab = Tabs.SelectedItem as TabItem;
+            var rtb = FindRtb(tab);
+            if (rtb == null) return;
+
+            var dialog = new FindReplaceDialog(rtb);
+            dialog.Owner = Window.GetWindow(this);
+            dialog.ShowDialog();
+        }
+
+        // Command helper methods for keyboard shortcuts
+        // Using a static instance to avoid repeated object allocation
+        private static readonly RoutedEventArgs _emptyArgs = new RoutedEventArgs();
+        
+        private void NewFile(object? parameter) => BtnNew_Click(null, _emptyArgs);
+        private void OpenFile(object? parameter) => BtnOpen_Click(null, _emptyArgs);
+        private void SaveFile(object? parameter) => BtnSave_Click(null, _emptyArgs);
+        private void Find(object? parameter) => BtnFind_Click(null, _emptyArgs);
+        private void Replace(object? parameter) => BtnReplace_Click(null, _emptyArgs);
+    }
+
+    /// <summary>
+    /// A simple ICommand implementation for binding to keyboard shortcuts.
+    /// This allows toolbar actions to be triggered via keyboard shortcuts.
+    /// </summary>
+    internal class RelayCommand : ICommand
+    {
+        private readonly Action<object?> _execute;
+        private readonly Predicate<object?>? _canExecute;
+
+        public RelayCommand(Action<object?> execute, Predicate<object?>? canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return _canExecute == null || _canExecute(parameter);
+        }
+
+        public void Execute(object? parameter)
+        {
+            _execute(parameter);
+        }
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
     }
 }
