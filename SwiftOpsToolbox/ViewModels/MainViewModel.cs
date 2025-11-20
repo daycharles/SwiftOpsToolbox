@@ -161,7 +161,7 @@ namespace SwiftOpsToolbox.ViewModels
         private string _theme = "Dark";
         public string Theme { get => _theme; set => SetProperty(ref _theme, value); }
 
-        private bool _startOnCalendar = true;
+        private bool _startOnCalendar = false;
         public bool StartOnCalendar { get => _startOnCalendar; set => SetProperty(ref _startOnCalendar, value); }
 
         private bool _use24Hour = false;

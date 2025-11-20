@@ -71,6 +71,10 @@ namespace SwiftOpsToolbox
                     {
                         ShowView("Calendar");
                     }
+                    else
+                    {
+                        ShowView("Home");
+                    }
 
                     // apply default calendar subview
                     if (!string.IsNullOrEmpty(vm.DefaultView))
@@ -92,8 +96,15 @@ namespace SwiftOpsToolbox
             // Place on a dedicated monitor and maximize
             PlaceOnDedicatedMonitor();
 
-            // Default view
-            ShowView("Calendar");
+            // Default view - check settings to determine which view to show
+            if (DataContext is ViewModels.MainViewModel viewModel && viewModel.StartOnCalendar)
+            {
+                ShowView("Calendar");
+            }
+            else
+            {
+                ShowView("Home");
+            }
 
             // Wire up calendar selection changed
             Loaded += MainWindow_Loaded;
