@@ -1,8 +1,16 @@
 /* Calendar Container */
 .calendar-container {
     padding: 20px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.calendar-main-section {
+    flex: 1;
+    min-width: 800px;
 }
 
 .calendar-header {
@@ -329,8 +337,184 @@
     background-color: #bb2d3b;
 }
 
+/* Holiday-specific styles */
+.holiday-item {
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.holiday-card {
+    background: #fff8f0 !important;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Side Panel Styles */
+.side-panel {
+    width: 350px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    position: sticky;
+    top: 20px;
+}
+
+.side-panel-header {
+    padding: 20px;
+    border-bottom: 2px solid #dee2e6;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.side-panel-header h3 {
+    margin: 0 0 5px 0;
+    font-size: 20px;
+}
+
+.side-panel-subtitle {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.side-panel-content {
+    padding: 15px;
+}
+
+.panel-section {
+    margin-bottom: 25px;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 8px;
+}
+
+.panel-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.panel-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.panel-item:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+    transform: translateX(2px);
+}
+
+.holiday-panel-item {
+    background: #fff8f0;
+}
+
+.holiday-panel-item:hover {
+    background: #ffe5cc;
+}
+
+.panel-item-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.date-day {
+    font-size: 20px;
+    font-weight: bold;
+    color: #495057;
+    line-height: 1;
+}
+
+.date-weekday {
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+.panel-item-details {
+    flex: 1;
+}
+
+.panel-item-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.panel-item-type,
+.panel-item-time {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.panel-item-description {
+    font-size: 12px;
+    color: #495057;
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+.panel-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.panel-empty p {
+    margin: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+    .calendar-container {
+        flex-direction: column;
+    }
+
+    .calendar-main-section {
+        min-width: 100%;
+    }
+
+    .side-panel {
+        width: 100%;
+        position: static;
+        max-height: none;
+    }
+
     .calendar-header {
         flex-direction: column;
         align-items: stretch;
@@ -360,5 +544,15 @@
 
     .event-time {
         display: none;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .calendar-main-section {
+        min-width: 600px;
+    }
+
+    .side-panel {
+        width: 300px;
     }
 }
