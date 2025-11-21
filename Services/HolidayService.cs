@@ -194,7 +194,15 @@ public class HolidayService
         }
 
         // Add weeks to get to the Nth occurrence
-        return firstOccurrence.AddDays(7 * (occurrence - 1));
+        var result = firstOccurrence.AddDays(7 * (occurrence - 1));
+        
+        // Validate the result is still in the target month
+        if (result.Month != month)
+        {
+            throw new ArgumentException($"The {occurrence}th {dayOfWeek} does not exist in {year}-{month}");
+        }
+        
+        return result;
     }
 
     // Helper method to get the last occurrence of a weekday in a month

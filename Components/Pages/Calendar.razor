@@ -53,7 +53,7 @@
                                 <span class="event-title">@holiday.Name</span>
                             </div>
                         }
-                        @foreach (var evt in day.Events.Take(3 - day.Holidays.Count()))
+                        @foreach (var evt in day.Events.Take(Math.Max(0, 3 - day.Holidays.Count())))
                         {
                             <div class="event-item" style="background-color: @evt.Color" title="@evt.Title - @evt.Description">
                                 <span class="event-time">@(evt.IsAllDay ? "All Day" : evt.StartTime.ToString("HH:mm"))</span>
