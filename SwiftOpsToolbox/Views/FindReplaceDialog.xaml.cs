@@ -11,10 +11,10 @@ namespace SwiftOpsToolbox.Views
     /// </summary>
     public partial class FindReplaceDialog : Window
     {
-        private readonly RichTextBox _richTextBox;
+        private readonly System.Windows.Controls.RichTextBox _richTextBox;
         private TextPointer? _currentPosition;
 
-        public FindReplaceDialog(RichTextBox richTextBox)
+        public FindReplaceDialog(System.Windows.Controls.RichTextBox richTextBox)
         {
             InitializeComponent();
             _richTextBox = richTextBox;
@@ -29,7 +29,7 @@ namespace SwiftOpsToolbox.Views
             string searchText = TxtFind.Text;
             if (string.IsNullOrEmpty(searchText))
             {
-                MessageBox.Show("Please enter text to find.", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please enter text to find.", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace SwiftOpsToolbox.Views
             
             if (!found)
             {
-                MessageBox.Show($"Cannot find \"{searchText}\"", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show($"Cannot find \"{searchText}\"", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
                 // Reset to start for next search
                 _currentPosition = _richTextBox.Document.ContentStart;
             }
@@ -50,7 +50,7 @@ namespace SwiftOpsToolbox.Views
 
             if (string.IsNullOrEmpty(searchText))
             {
-                MessageBox.Show("Please enter text to find.", "Replace", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please enter text to find.", "Replace", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace SwiftOpsToolbox.Views
 
             if (string.IsNullOrEmpty(searchText))
             {
-                MessageBox.Show("Please enter text to find.", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please enter text to find.", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -100,11 +100,11 @@ namespace SwiftOpsToolbox.Views
 
             if (replaceCount >= maxReplacements)
             {
-                MessageBox.Show($"Replaced {replaceCount} occurrence(s). Stopped at safety limit.", "Replace All", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show($"Replaced {replaceCount} occurrence(s). Stopped at safety limit.", "Replace All", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-                MessageBox.Show($"Replaced {replaceCount} occurrence(s).", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show($"Replaced {replaceCount} occurrence(s).", "Replace All", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             _currentPosition = _richTextBox.Document.ContentStart;
         }

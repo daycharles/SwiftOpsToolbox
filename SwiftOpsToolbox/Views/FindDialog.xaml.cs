@@ -10,10 +10,10 @@ namespace SwiftOpsToolbox.Views
     /// </summary>
     public partial class FindDialog : Window
     {
-        private readonly RichTextBox _richTextBox;
+        private readonly System.Windows.Controls.RichTextBox _richTextBox;
         private TextPointer? _currentPosition;
 
-        public FindDialog(RichTextBox richTextBox)
+        public FindDialog(System.Windows.Controls.RichTextBox richTextBox)
         {
             InitializeComponent();
             _richTextBox = richTextBox;
@@ -28,7 +28,7 @@ namespace SwiftOpsToolbox.Views
             string searchText = TxtFind.Text;
             if (string.IsNullOrEmpty(searchText))
             {
-                MessageBox.Show("Please enter text to find.", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please enter text to find.", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace SwiftOpsToolbox.Views
             
             if (!found)
             {
-                MessageBox.Show($"Cannot find \"{searchText}\"", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show($"Cannot find \"{searchText}\"", "Find", MessageBoxButton.OK, MessageBoxImage.Information);
                 // Reset to start for next search
                 _currentPosition = _richTextBox.Document.ContentStart;
             }

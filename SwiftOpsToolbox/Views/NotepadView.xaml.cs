@@ -363,7 +363,7 @@ namespace SwiftOpsToolbox.Views
             var tab = Tabs.SelectedItem as TabItem;
             var rtb = FindRtb(tab);
             if (rtb == null) return;
-
+            
             if (weight.HasValue)
             {
                 rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, weight.Value);
@@ -465,7 +465,7 @@ namespace SwiftOpsToolbox.Views
         {
             var tab = Tabs.SelectedItem as TabItem;
             var rtb = FindRtb(tab);
-            if (rtb != null && Clipboard.ContainsText())
+            if (rtb != null && System.Windows.Clipboard.ContainsText())
             {
                 ApplicationCommands.Paste.Execute(null, rtb);
                 rtb.Focus();

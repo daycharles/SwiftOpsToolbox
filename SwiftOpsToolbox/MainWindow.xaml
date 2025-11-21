@@ -23,6 +23,17 @@
                          Color="#007BFF" />
         <SolidColorBrush x:Key="MutedText"
                          Color="#A6A6A6" />
+        <!-- Added missing brushes used throughout the XAML -->
+        <SolidColorBrush x:Key="DarkGray" Color="#333333" />
+        <SolidColorBrush x:Key="ElectricBlue" Color="#007BFF" />
+        <SolidColorBrush x:Key="VibrantOrange" Color="#FF6F00" />
+        <SolidColorBrush x:Key="LightGray" Color="#F5F5F5" />
+        <SolidColorBrush x:Key="White" Color="#FFFFFF" />
+
+        <!-- Converters -->
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+
         <!-- Simple card style -->
         <Style x:Key="CardStyle"
                TargetType="Border">

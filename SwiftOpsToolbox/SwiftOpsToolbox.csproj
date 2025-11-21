@@ -30,4 +30,8 @@
     <Resource Include="SwiftOpsToolboxLogo.PNG" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
+
 </Project>

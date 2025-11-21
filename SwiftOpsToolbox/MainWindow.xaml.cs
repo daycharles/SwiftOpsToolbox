@@ -632,7 +632,7 @@ namespace SwiftOpsToolbox
 
         private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
             {
                 var tierName = item.Content?.ToString();
                 if (!string.IsNullOrEmpty(tierName))

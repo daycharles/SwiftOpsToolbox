@@ -187,7 +187,18 @@ namespace SwiftOpsToolbox.ViewModels
         public bool SftpVisible => _settingsService?.Settings?.Features?.SftpEnabled ?? false;
         
         // Current tier display and setter
-        public string CurrentTierName => _settingsService?.Settings?.Tier.ToString() ?? "Free";
+        public string CurrentTierName
+        {
+            get => _settingsService?.Settings?.Tier.ToString() ?? "Free";
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value)) return;
+                if (System.Enum.TryParse<UserTier>(value, true, out var tier) && tier != CurrentTier)
+                {
+                    CurrentTier = tier; // this updates settings service and refreshes UI
+                }
+            }
+        }
         
         public UserTier CurrentTier 
         { 
