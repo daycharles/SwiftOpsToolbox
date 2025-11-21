@@ -1031,6 +1031,144 @@
                                             <TextBlock Text="SFTP Client (Pro+)"
                                                        Foreground="White" />
                                         </StackPanel>
+                                        <!-- Pro Tier Advanced Features -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedCalendarVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedCalendarVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Advanced Calendar (Pro+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedMarkdownVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedMarkdownVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Advanced Markdown (Pro+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedFileSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AdvancedFileSearchVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Advanced File Search (Pro+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <!-- Business Tier Features -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding TeamSharingVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding TeamSharingVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Team Sharing (Business+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding CentralizedManagementVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding CentralizedManagementVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Centralized Management (Business+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AuditLogsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding AuditLogsVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Audit Logs (Business+)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <!-- Enterprise Tier Features -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding WhiteLabelingVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding WhiteLabelingVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="White-labeling (Enterprise)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding DirectoryIntegrationVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding DirectoryIntegrationVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Directory Integration (Enterprise)"
+                                                       Foreground="White" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,4,0,0">
+                                            <TextBlock Text="✓"
+                                                       Foreground="#58A6FF"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding PrivateCloudVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="✗"
+                                                       Foreground="#8B949E"
+                                                       Width="30"
+                                                       FontWeight="Bold"
+                                                       Visibility="{Binding PrivateCloudVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                                            <TextBlock Text="Private Cloud (Enterprise)"
+                                                       Foreground="White" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <!-- General Settings -->
