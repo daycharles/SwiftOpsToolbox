@@ -1046,7 +1046,8 @@
                                                Width="120"
                                                VerticalAlignment="Center" />
                                     <ComboBox Width="200"
-                                              SelectedValue="{Binding Theme, Mode=TwoWay}">
+                                              SelectedValue="{Binding Theme, Mode=TwoWay}"
+                                              SelectionChanged="ThemeComboBox_SelectionChanged">
                                         <ComboBoxItem Content="Dark" />
                                         <ComboBoxItem Content="Light" />
                                         <ComboBoxItem Content="Electric Blue" />
@@ -1159,7 +1160,8 @@
                                                Width="120"
                                                VerticalAlignment="Center" />
                                     <ComboBox Width="200"
-                                              SelectedValue="{Binding DefaultView, Mode=TwoWay}">
+                                              SelectedValue="{Binding DefaultView, Mode=TwoWay}"
+                                              SelectionChanged="DefaultViewComboBox_SelectionChanged">
                                         <ComboBoxItem Content="Month" />
                                         <ComboBoxItem Content="Week" />
                                         <ComboBoxItem Content="Day" />
@@ -1172,7 +1174,9 @@
                                                Width="120"
                                                VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding StartOnCalendar, Mode=TwoWay}"
-                                              Foreground="White" />
+                                              Foreground="White"
+                                              Checked="StartOnCalendarCheckBox_Changed"
+                                              Unchecked="StartOnCalendarCheckBox_Changed" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Margin="0,6,0,6">
@@ -1181,7 +1185,9 @@
                                                Width="120"
                                                VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding Use24Hour, Mode=TwoWay}"
-                                              Foreground="White" />
+                                              Foreground="White"
+                                              Checked="Use24HourCheckBox_Changed"
+                                              Unchecked="Use24HourCheckBox_Changed" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Left"

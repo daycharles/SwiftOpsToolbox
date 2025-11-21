@@ -256,6 +256,12 @@ namespace SwiftOpsToolbox
 
             RenderPlanners();
 
+            // Initialize ComboBox selections based on current settings
+            if (DataContext is ViewModels.MainViewModel vmInit)
+            {
+                InitializeSettingsComboBoxes(vmInit);
+            }
+
             // start file indexing after UI has rendered
             if (DataContext is ViewModels.MainViewModel vm)
             {
@@ -630,6 +636,84 @@ namespace SwiftOpsToolbox
             }
         }
 
+        private void InitializeSettingsComboBoxes(ViewModels.MainViewModel vm)
+        {
+            // Find and initialize Theme ComboBox
+            var themeCombo = FindComboBoxInSettingsPanel("Theme");
+            if (themeCombo != null)
+            {
+                SelectComboBoxItemByContent(themeCombo, vm.Theme);
+            }
+
+            // Find and initialize DefaultView ComboBox
+            var defaultViewCombo = FindComboBoxInSettingsPanel("DefaultView");
+            if (defaultViewCombo != null)
+            {
+                SelectComboBoxItemByContent(defaultViewCombo, vm.DefaultView);
+            }
+
+            // Find and initialize Tier ComboBox
+            var tierCombo = FindComboBoxInSettingsPanel("Tier");
+            if (tierCombo != null)
+            {
+                SelectComboBoxItemByContent(tierCombo, vm.CurrentTierName);
+            }
+        }
+
+        private System.Windows.Controls.ComboBox? FindComboBoxInSettingsPanel(string setting)
+        {
+            var settingsPanel = this.FindName("SettingsModePanel") as Grid;
+            if (settingsPanel == null) return null;
+
+            return FindComboBoxRecursive(settingsPanel, setting);
+        }
+
+        private System.Windows.Controls.ComboBox? FindComboBoxRecursive(DependencyObject parent, string setting)
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                
+                if (child is System.Windows.Controls.ComboBox combo)
+                {
+                    // Check if this combo is preceded by a TextBlock with the setting name
+                    var container = VisualTreeHelper.GetParent(combo) as StackPanel;
+                    if (container != null && container.Orientation == Orientation.Horizontal)
+                    {
+                        foreach (var sibling in container.Children)
+                        {
+                            if (sibling is TextBlock tb && tb.Text != null)
+                            {
+                                if ((setting == "Theme" && tb.Text.Contains("Theme")) ||
+                                    (setting == "DefaultView" && tb.Text.Contains("Default View")) ||
+                                    (setting == "Tier" && tb.Text.Contains("Switch Tier")))
+                                {
+                                    return combo;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var result = FindComboBoxRecursive(child, setting);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        private void SelectComboBoxItemByContent(System.Windows.Controls.ComboBox combo, string content)
+        {
+            foreach (var item in combo.Items)
+            {
+                if (item is ComboBoxItem cbItem && cbItem.Content?.ToString() == content)
+                {
+                    combo.SelectedItem = cbItem;
+                    break;
+                }
+            }
+        }
+
         private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
@@ -639,6 +723,49 @@ namespace SwiftOpsToolbox
                 {
                     vm.ChangeTierCommand?.Execute(tierName);
                 }
+            }
+        }
+
+        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var themeName = item.Content?.ToString();
+                if (!string.IsNullOrEmpty(themeName))
+                {
+                    vm.Theme = themeName;
+                    // Apply theme immediately
+                    ApplyTheme(themeName);
+                }
+            }
+        }
+
+        private void DefaultViewComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var viewName = item.Content?.ToString();
+                if (!string.IsNullOrEmpty(viewName))
+                {
+                    vm.DefaultView = viewName;
+                }
+            }
+        }
+
+        private void StartOnCalendarCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.CheckBox checkBox && DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.StartOnCalendar = checkBox.IsChecked ?? false;
+            }
+        }
+
+        private void Use24HourCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.CheckBox checkBox && DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.Use24Hour = checkBox.IsChecked ?? false;
+                // The ViewModel already handles updating the clock when Use24Hour changes
             }
         }
     }
