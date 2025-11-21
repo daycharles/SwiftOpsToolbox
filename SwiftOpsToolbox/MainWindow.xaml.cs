@@ -60,12 +60,13 @@ namespace SwiftOpsToolbox
             if (DataContext is ViewModels.MainViewModel vm)
             {
                 ApplyTheme(vm.Theme);
+                
+                // Subscribe to PropertyChanged to apply theme instantly when Theme property changes
+                vm.PropertyChanged += Vm_PropertyChanged;
+                
                 // Apply settings only when user saves
                 vm.SettingsSaved += (s, e) =>
                 {
-                    // apply theme
-                    ApplyTheme(vm.Theme);
-
                     // if configured to start on calendar, switch to calendar view
                     if (vm.StartOnCalendar)
                     {
@@ -118,6 +119,18 @@ namespace SwiftOpsToolbox
             if (monthBtn != null) monthBtn.Click += (s, e) => ShowCalendarViewMode("SingleMonth");
             if (weekBtn != null) weekBtn.Click += (s, e) => ShowCalendarViewMode("Week");
             if (dayBtn != null) dayBtn.Click += (s, e) => ShowCalendarViewMode("Day");
+            
+            // Subscribe to Closed event for cleanup
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object? sender, System.EventArgs e)
+        {
+            // Unsubscribe from PropertyChanged to prevent memory leak
+            if (DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.PropertyChanged -= Vm_PropertyChanged;
+            }
         }
 
         private static bool IsRunningAsAdmin()
@@ -791,6 +804,22 @@ namespace SwiftOpsToolbox
             {
                 vm.Use24Hour = checkBox.IsChecked ?? false;
                 // The ViewModel already handles updating the clock when Use24Hour changes
+            // Extract the selected theme name
+            if (sender is not System.Windows.Controls.ComboBox combo) return;
+            if (combo.SelectedItem is not ComboBoxItem item) return;
+            if (DataContext is not ViewModels.MainViewModel vm) return;
+            
+            var themeName = item.Content?.ToString();
+            if (string.IsNullOrEmpty(themeName) || vm.Theme == themeName) return;
+            
+            // Update the Theme property which will trigger instant theme application via PropertyChanged
+            vm.Theme = themeName;
+            
+            // Auto-save the theme preference
+            if (vm.SettingsService?.Settings != null)
+            {
+                vm.SettingsService.Settings.Theme = themeName;
+                vm.SettingsService.Save();
             }
         }
     }
