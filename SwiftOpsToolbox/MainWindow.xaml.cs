@@ -4,6 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System;
 using System.Collections.Specialized;
+using System.IO;
+using Markdig;
+using MessageBox = System.Windows.MessageBox;
 
 namespace SwiftOpsToolbox
 {
@@ -51,6 +54,9 @@ namespace SwiftOpsToolbox
             }
 
             Loaded += (s, e) => RefreshMonthGrid();
+
+            // Bind F1/Help command to open user documentation
+            CommandBindings.Add(new CommandBinding(System.Windows.Input.ApplicationCommands.Help, (s, e) => OpenUserDocumentation_Click(s, (RoutedEventArgs?)e.Parameter)));
         }
 
         private void CalendarEvents_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -263,6 +269,47 @@ namespace SwiftOpsToolbox
             SearchModePanel.Visibility = Visibility.Collapsed;
             SettingsModePanel.Visibility = Visibility.Visible;
             SetAgendaVisible(false);
+        }
+
+        // Open the user documentation (docs/USER_DOCUMENTATION.md) in the MarkdownWindow
+        private void OpenUserDocumentation_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var mdPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "docs", "USER_DOCUMENTATION.md");
+                mdPath = System.IO.Path.GetFullPath(mdPath);
+                if (!File.Exists(mdPath))
+                {
+                    // try repo-relative path (when running from bin folder)
+                    var alt = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "docs", "USER_DOCUMENTATION.md");
+                    if (File.Exists(alt)) mdPath = alt;
+                }
+
+                if (!File.Exists(mdPath))
+                {
+                    MessageBox.Show(this, $"Documentation file not found:\n{mdPath}", "Not found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Convert markdown to HTML using Markdig (same pipeline used elsewhere)
+                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+                var md = File.ReadAllText(mdPath);
+                var html = Markdig.Markdown.ToHtml(md, pipeline);
+
+                var content = $"<html><head><meta charset=\"utf-8\"><style>body{{background-color:#0F0F10;color:#FFFFFF;font-family:Segoe UI;padding:12px;}}img{{max-width:100%;height:auto;}}</style></head><body>{html}</body></html>";
+                var tmp = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "swiftops_userdoc_preview.html");
+                File.WriteAllText(tmp, content);
+
+                var win = new Views.MarkdownWindow();
+                win.Owner = this;
+                win.Show();
+                win.Navigate(tmp);
+                win.Activate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Failed to open documentation: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
