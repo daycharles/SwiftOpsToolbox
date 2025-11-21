@@ -119,6 +119,18 @@ namespace SwiftOpsToolbox
             if (monthBtn != null) monthBtn.Click += (s, e) => ShowCalendarViewMode("SingleMonth");
             if (weekBtn != null) weekBtn.Click += (s, e) => ShowCalendarViewMode("Week");
             if (dayBtn != null) dayBtn.Click += (s, e) => ShowCalendarViewMode("Day");
+            
+            // Subscribe to Closed event for cleanup
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object? sender, System.EventArgs e)
+        {
+            // Unsubscribe from PropertyChanged to prevent memory leak
+            if (DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.PropertyChanged -= Vm_PropertyChanged;
+            }
         }
 
         private static bool IsRunningAsAdmin()
