@@ -7,4 +7,12 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Exclude WPF project directory -->
+    <Compile Remove="SwiftOpsToolbox/**" />
+    <Content Remove="SwiftOpsToolbox/**" />
+    <EmbeddedResource Remove="SwiftOpsToolbox/**" />
+    <None Remove="SwiftOpsToolbox/**" />
+  </ItemGroup>
+
 </Project>

@@ -357,14 +357,29 @@
                                                 <TextBlock Text="{Binding AppMemoryMb, StringFormat={}{0} MB}"
                                                            Foreground="White" />
                                             </StackPanel>
-                                            <Button Content="Refresh Weather"
-                                                    Width="160"
-                                                    Height="28"
+                                            <Button Width="160"
+                                                    Height="50"
                                                     Margin="0,8,0,0"
                                                     Command="{Binding RefreshWeatherCommand}"
                                                     Background="{StaticResource ElectricBlue}"
                                                     Foreground="White"
-                                                    BorderThickness="0" />
+                                                    BorderThickness="0">
+                                                <StackPanel Orientation="Vertical"
+                                                            HorizontalAlignment="Center">
+                                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                               Text="?"
+                                                               FontSize="16"
+                                                               Foreground="White"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Text="Refresh Weather"
+                                                               Foreground="White"
+                                                               Opacity="0.95"
+                                                               FontSize="10"
+                                                               HorizontalAlignment="Center"
+                                                               Margin="0,3,0,0" />
+                                                </StackPanel>
+                                            </Button>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -468,53 +483,93 @@
                                     Grid.ColumnSpan="2">
                             <Button x:Name="ThreeMonthViewBtn"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                    Width="40"
-                                    Height="28"
+                                    Width="70"
+                                    Height="60"
                                     Margin="0,0,8,0"
                                     ToolTip="3 Months">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text="?"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                                <StackPanel Orientation="Vertical"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text="?"
+                                               FontSize="20"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="3 Months"
+                                               Foreground="White"
+                                               Opacity="0.95"
+                                               FontSize="9"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,4,0,0" />
+                                </StackPanel>
                             </Button>
                             <Button x:Name="MonthViewBtn"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                    Width="40"
-                                    Height="28"
+                                    Width="70"
+                                    Height="60"
                                     Margin="0,0,8,0"
                                     Command="{Binding SetMonthViewCommand}"
                                     ToolTip="Month">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text="?"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                                <StackPanel Orientation="Vertical"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text="?"
+                                               FontSize="20"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Month"
+                                               Foreground="White"
+                                               Opacity="0.95"
+                                               FontSize="9"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,4,0,0" />
+                                </StackPanel>
                             </Button>
                             <Button x:Name="WeekViewBtn"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                    Width="40"
-                                    Height="28"
+                                    Width="70"
+                                    Height="60"
                                     Margin="0,0,8,0"
                                     Command="{Binding SetWeekViewCommand}"
                                     ToolTip="Week">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text="?"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                                <StackPanel Orientation="Vertical"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text="?"
+                                               FontSize="20"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Week"
+                                               Foreground="White"
+                                               Opacity="0.95"
+                                               FontSize="9"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,4,0,0" />
+                                </StackPanel>
                             </Button>
                             <Button x:Name="DayViewBtn"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                    Width="40"
-                                    Height="28"
+                                    Width="70"
+                                    Height="60"
                                     Command="{Binding SetDayViewCommand}"
                                     ToolTip="Day">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text="?"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                                <StackPanel Orientation="Vertical"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text="?"
+                                               FontSize="20"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Day"
+                                               Foreground="White"
+                                               Opacity="0.95"
+                                               FontSize="9"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,4,0,0" />
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                         <!-- Split calendar area into two columns: calendar (left) and events (right) -->
@@ -699,41 +754,71 @@
                                                 HorizontalAlignment="Right"
                                                 Margin="0,6,0,6">
                                         <Button x:Name="BtnAddEvent"
-                                                Width="36"
-                                                Height="28"
+                                                Width="60"
+                                                Height="50"
                                                 Margin="2"
                                                 ToolTip="Add Event"
                                                 Background="{StaticResource ElectricBlue}"
                                                 BorderThickness="0">
-                                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                                       Text="?"
-                                                       Foreground="White"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
+                                            <StackPanel Orientation="Vertical"
+                                                        HorizontalAlignment="Center">
+                                                <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                           Text="?"
+                                                           FontSize="16"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="Add"
+                                                           Foreground="White"
+                                                           Opacity="0.95"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,3,0,0" />
+                                            </StackPanel>
                                         </Button>
                                         <Button x:Name="BtnEditEvent"
-                                                Width="36"
-                                                Height="28"
+                                                Width="60"
+                                                Height="50"
                                                 Margin="2"
                                                 ToolTip="Edit Event">
-                                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                                       Text="?"
-                                                       Foreground="White"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
+                                            <StackPanel Orientation="Vertical"
+                                                        HorizontalAlignment="Center">
+                                                <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                           Text="?"
+                                                           FontSize="16"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="Edit"
+                                                           Foreground="White"
+                                                           Opacity="0.95"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,3,0,0" />
+                                            </StackPanel>
                                         </Button>
                                         <Button x:Name="BtnDeleteEvent"
-                                                Width="36"
-                                                Height="28"
+                                                Width="60"
+                                                Height="50"
                                                 Margin="2"
                                                 ToolTip="Delete Event"
                                                 Background="{StaticResource VibrantOrange}"
                                                 BorderThickness="0">
-                                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                                       Text="?"
-                                                       Foreground="White"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
+                                            <StackPanel Orientation="Vertical"
+                                                        HorizontalAlignment="Center">
+                                                <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                           Text="?"
+                                                           FontSize="16"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="Delete"
+                                                           Foreground="White"
+                                                           Opacity="0.95"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,3,0,0" />
+                                            </StackPanel>
                                         </Button>
                                     </StackPanel>
                                     <ListBox x:Name="LbEvents"
@@ -762,13 +847,28 @@
                                          Margin="0,0,8,0"
                                          Text="{Binding NewTodoText, UpdateSourceTrigger=PropertyChanged}"
                                          mah:TextBoxHelper.Watermark="Add a task..." />
-                                <Button Content="Add"
-                                        Width="80"
-                                        Height="32"
+                                <Button Width="80"
+                                        Height="50"
                                         Command="{Binding AddTodoCommand}"
                                         Background="{StaticResource ElectricBlue}"
                                         Foreground="White"
-                                        BorderThickness="0" />
+                                        BorderThickness="0">
+                                    <StackPanel Orientation="Vertical"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                   Text="?"
+                                                   FontSize="16"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="Add"
+                                                   Foreground="White"
+                                                   Opacity="0.95"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <ListBox Grid.Row="1"
                                      ItemsSource="{Binding ToDoItems}"
@@ -808,13 +908,28 @@
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Right"
                                         Margin="0,0,0,8">
-                                <Button Content="Clear All"
-                                        Width="100"
-                                        Height="28"
+                                <Button Width="100"
+                                        Height="50"
                                         Command="{Binding ClearClipboardCommand}"
                                         Background="{StaticResource VibrantOrange}"
                                         Foreground="White"
-                                        BorderThickness="0" />
+                                        BorderThickness="0">
+                                    <StackPanel Orientation="Vertical"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                   Text="?"
+                                                   FontSize="16"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="Clear All"
+                                                   Foreground="White"
+                                                   Opacity="0.95"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <ListBox Grid.Row="1"
                                      ItemsSource="{Binding ClipboardItems}"
@@ -1187,13 +1302,28 @@
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Left"
                                             Margin="0,12,0,0">
-                                    <Button Content="Save Settings"
-                                            Width="120"
-                                            Height="32"
+                                    <Button Width="120"
+                                            Height="50"
                                             Command="{Binding SaveSettingsCommand}"
                                             Background="{StaticResource ElectricBlue}"
                                             Foreground="White"
-                                            BorderThickness="0" />
+                                            BorderThickness="0">
+                                        <StackPanel Orientation="Vertical"
+                                                    HorizontalAlignment="Center">
+                                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                       Text="?"
+                                                       FontSize="16"
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center" />
+                                            <TextBlock Text="Save Settings"
+                                                       Foreground="White"
+                                                       Opacity="0.95"
+                                                       FontSize="10"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,3,0,0" />
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -1220,14 +1350,29 @@
                                      Height="30"
                                      Text="{Binding NewTodoText, UpdateSourceTrigger=PropertyChanged}"
                                      mah:TextBoxHelper.Watermark="Add a custom todo..." />
-                            <Button Content="Add"
-                                    Width="80"
-                                    Height="30"
+                            <Button Width="80"
+                                    Height="50"
                                     Margin="8,0,0,0"
                                     Command="{Binding AddTodoCommand}"
                                     Background="{StaticResource ElectricBlue}"
                                     Foreground="White"
-                                    BorderThickness="0" />
+                                    BorderThickness="0">
+                                <StackPanel Orientation="Vertical"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text="?"
+                                               FontSize="16"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Add"
+                                               Foreground="White"
+                                               Opacity="0.95"
+                                               FontSize="10"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,3,0,0" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                         <StackPanel Grid.Row="2"
                                     VerticalAlignment="Top">

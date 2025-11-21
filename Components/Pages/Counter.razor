@@ -7,7 +7,10 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="icon-text-btn primary" @onclick="IncrementCount">
+    <span class="icon">➕</span>
+    <span class="text">Increment</span>
+</button>
 
 @code {
     private int currentCount = 0;
