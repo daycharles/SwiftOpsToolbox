@@ -674,7 +674,6 @@ namespace SwiftOpsToolbox
                 vm.SettingsService.Settings.Theme = themeName;
                 vm.SettingsService.Save();
             }
-            }
         }
     }
 }
