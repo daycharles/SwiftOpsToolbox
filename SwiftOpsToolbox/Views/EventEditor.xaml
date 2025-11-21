@@ -32,8 +32,18 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="4">
-            <Button x:Name="BtnOk" Content="OK" Width="80" Margin="4" IsDefault="True" Click="BtnOk_Click" />
-            <Button x:Name="BtnCancel" Content="Cancel" Width="80" Margin="4" IsCancel="True" />
+            <Button x:Name="BtnOk" Width="80" Height="50" Margin="4" IsDefault="True" Click="BtnOk_Click">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                    <TextBlock Text="OK" Foreground="White" Opacity="0.95" FontSize="9" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="BtnCancel" Width="80" Height="50" Margin="4" IsCancel="True">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                    <TextBlock Text="Cancel" Foreground="White" Opacity="0.95" FontSize="9" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

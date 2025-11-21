@@ -60,12 +60,13 @@ namespace SwiftOpsToolbox
             if (DataContext is ViewModels.MainViewModel vm)
             {
                 ApplyTheme(vm.Theme);
+                
+                // Subscribe to PropertyChanged to apply theme instantly when Theme property changes
+                vm.PropertyChanged += Vm_PropertyChanged;
+                
                 // Apply settings only when user saves
                 vm.SettingsSaved += (s, e) =>
                 {
-                    // apply theme
-                    ApplyTheme(vm.Theme);
-
                     // if configured to start on calendar, switch to calendar view
                     if (vm.StartOnCalendar)
                     {
@@ -118,6 +119,18 @@ namespace SwiftOpsToolbox
             if (monthBtn != null) monthBtn.Click += (s, e) => ShowCalendarViewMode("SingleMonth");
             if (weekBtn != null) weekBtn.Click += (s, e) => ShowCalendarViewMode("Week");
             if (dayBtn != null) dayBtn.Click += (s, e) => ShowCalendarViewMode("Day");
+            
+            // Subscribe to Closed event for cleanup
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object? sender, System.EventArgs e)
+        {
+            // Unsubscribe from PropertyChanged to prevent memory leak
+            if (DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.PropertyChanged -= Vm_PropertyChanged;
+            }
         }
 
         private static bool IsRunningAsAdmin()
@@ -255,6 +268,12 @@ namespace SwiftOpsToolbox
             if (cal3 != null) cal3.SelectedDatesChanged += Calendar_SelectedDatesChanged;
 
             RenderPlanners();
+
+            // Initialize ComboBox selections based on current settings
+            if (DataContext is ViewModels.MainViewModel vmInit)
+            {
+                InitializeSettingsComboBoxes(vmInit);
+            }
 
             // start file indexing after UI has rendered
             if (DataContext is ViewModels.MainViewModel vm)
@@ -630,6 +649,102 @@ namespace SwiftOpsToolbox
             }
         }
 
+        private void InitializeSettingsComboBoxes(ViewModels.MainViewModel vm)
+        {
+            try
+            {
+                // Find and initialize Theme ComboBox
+                var themeCombo = FindComboBoxInSettingsPanel("Theme");
+                if (themeCombo != null)
+                {
+                    SelectComboBoxItemByContent(themeCombo, vm.Theme);
+                }
+
+                // Find and initialize DefaultView ComboBox
+                var defaultViewCombo = FindComboBoxInSettingsPanel("DefaultView");
+                if (defaultViewCombo != null)
+                {
+                    SelectComboBoxItemByContent(defaultViewCombo, vm.DefaultView);
+                }
+
+                // Find and initialize Tier ComboBox
+                var tierCombo = FindComboBoxInSettingsPanel("Tier");
+                if (tierCombo != null)
+                {
+                    SelectComboBoxItemByContent(tierCombo, vm.CurrentTierName);
+                }
+            }
+            catch
+            {
+                // Silently fail to prevent initialization errors from crashing the app
+                // ComboBoxes will remain at their default selections
+            }
+        }
+
+        /// <summary>
+        /// Finds a ComboBox in the settings panel by identifying its associated label.
+        /// Note: This method relies on UI structure and text content. For better reliability,
+        /// consider adding x:Name attributes to ComboBoxes in the XAML.
+        /// </summary>
+        private System.Windows.Controls.ComboBox? FindComboBoxInSettingsPanel(string setting)
+        {
+            var settingsPanel = this.FindName("SettingsModePanel") as Grid;
+            if (settingsPanel == null) return null;
+
+            return FindComboBoxRecursive(settingsPanel, setting);
+        }
+
+        /// <summary>
+        /// Recursively searches for a ComboBox with an associated TextBlock label.
+        /// </summary>
+        private System.Windows.Controls.ComboBox? FindComboBoxRecursive(DependencyObject parent, string setting)
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                
+                if (child is System.Windows.Controls.ComboBox combo)
+                {
+                    // Check if this combo is preceded by a TextBlock with the setting name
+                    var container = VisualTreeHelper.GetParent(combo) as StackPanel;
+                    if (container != null && container.Orientation == Orientation.Horizontal)
+                    {
+                        var matchingTextBlock = container.Children.OfType<TextBlock>()
+                            .FirstOrDefault(tb => tb.Text != null && 
+                                ((setting == "Theme" && tb.Text.Contains("Theme")) ||
+                                 (setting == "DefaultView" && tb.Text.Contains("Default View")) ||
+                                 (setting == "Tier" && tb.Text.Contains("Switch Tier"))));
+                        
+                        if (matchingTextBlock != null)
+                        {
+                            return combo;
+                        }
+                    }
+                }
+
+                var result = FindComboBoxRecursive(child, setting);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Selects a ComboBoxItem by matching its Content string.
+        /// Silently fails if no matching item is found.
+        /// </summary>
+        private void SelectComboBoxItemByContent(System.Windows.Controls.ComboBox combo, string content)
+        {
+            if (string.IsNullOrEmpty(content)) return;
+            
+            var matchingItem = combo.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content?.ToString() == content);
+            if (matchingItem != null)
+            {
+                combo.SelectedItem = matchingItem;
+            }
+            // If no match found, ComboBox retains its default selection
+        }
+
         private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
@@ -639,6 +754,72 @@ namespace SwiftOpsToolbox
                 {
                     vm.ChangeTierCommand?.Execute(tierName);
                 }
+            }
+        }
+
+        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var themeName = item.Content?.ToString();
+                if (!string.IsNullOrEmpty(themeName))
+                {
+                    vm.Theme = themeName;
+                    // Apply theme immediately
+                    try
+                    {
+                        ApplyTheme(themeName);
+                    }
+                    catch
+                    {
+                        // Ignore theme application errors to prevent crashes
+                    }
+                }
+            }
+        }
+
+        private void DefaultViewComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var viewName = item.Content?.ToString();
+                if (!string.IsNullOrEmpty(viewName))
+                {
+                    vm.DefaultView = viewName;
+                }
+            }
+        }
+
+        private void StartOnCalendarCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.CheckBox checkBox && DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.StartOnCalendar = checkBox.IsChecked ?? false;
+            }
+        }
+
+        private void Use24HourCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.CheckBox checkBox && DataContext is ViewModels.MainViewModel vm)
+            {
+                vm.Use24Hour = checkBox.IsChecked ?? false;
+                // The ViewModel already handles updating the clock when Use24Hour changes
+            // Extract the selected theme name
+            if (sender is not System.Windows.Controls.ComboBox combo) return;
+            if (combo.SelectedItem is not ComboBoxItem item) return;
+            if (DataContext is not ViewModels.MainViewModel vm) return;
+            
+            var themeName = item.Content?.ToString();
+            if (string.IsNullOrEmpty(themeName) || vm.Theme == themeName) return;
+            
+            // Update the Theme property which will trigger instant theme application via PropertyChanged
+            vm.Theme = themeName;
+            
+            // Auto-save the theme preference
+            if (vm.SettingsService?.Settings != null)
+            {
+                vm.SettingsService.Settings.Theme = themeName;
+                vm.SettingsService.Save();
             }
         }
     }

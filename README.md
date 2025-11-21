@@ -1,4 +1,5 @@
 # SwiftOpsToolbox
+
 <<<<<<< HEAD
 
 SwiftOps Toolbox is a fast, offline-friendly productivity suite for Windows. Includes calendar, to-do list, Markdown notes, lightning-fast file search, and secure SFTP client. Built for professionals who value speed, control, and simplicity—no cloud, no bloat.
@@ -6,6 +7,7 @@ SwiftOps Toolbox is a fast, offline-friendly productivity suite for Windows. Inc
 ## Features
 
 ### Core Features (Free Tier)
+
 - **Calendar & Events**: Manage your schedule with recurring events and reminders
 - **To-Do List**: Keep track of tasks with timestamps
 - **Notepad/Markdown**: Read and write markdown documents with basic formatting
@@ -13,12 +15,14 @@ SwiftOps Toolbox is a fast, offline-friendly productivity suite for Windows. Inc
 - **Clipboard History**: Track and reuse clipboard items
 
 ### Pro Features
+
 - Advanced calendar views and features
 - Enhanced markdown editing
 - Advanced file search with operators
 - Secure SFTP client for file transfers
 
 ### Business & Enterprise Features
+
 - Team collaboration and sharing
 - Centralized management
 - Audit logs and compliance features
@@ -27,6 +31,7 @@ SwiftOps Toolbox is a fast, offline-friendly productivity suite for Windows. Inc
 ## Tiered Pricing Model
 
 SwiftOps Toolbox now supports a flexible tiered pricing system. See [TIERED_PRICING.md](TIERED_PRICING.md) for details on:
+
 - Feature availability by tier
 - Architecture and implementation
 - Developer guide for extending the system
@@ -42,6 +47,7 @@ SwiftOps Toolbox now supports a flexible tiered pricing system. See [TIERED_PRIC
 ## Development
 
 This is a WPF application built with .NET 8 targeting Windows. The codebase uses:
+
 - MVVM pattern with CommunityToolkit.Mvvm
 - MahApps.Metro for modern UI
 - Modular service architecture for extensibility
@@ -55,9 +61,10 @@ SwiftOps Toolbox is a fast, offline-friendly productivity suite. Includes calend
 ## Features
 
 ### 📅 Calendar - Monthly Planner
+
 - **Large Monthly View**: See an entire month at a glance with a clean, intuitive grid layout
 - **Events Inside Day Cells**: View your events directly within each day, color-coded for easy identification
-- **Event Management**: 
+- **Event Management**:
   - Add new events with custom titles, descriptions, times, and colors
   - Edit existing events by clicking on them
   - Delete events when no longer needed
@@ -72,6 +79,7 @@ SwiftOps Toolbox is a fast, offline-friendly productivity suite. Includes calend
 ## Getting Started
 
 ### Prerequisites
+
 - .NET 10.0 SDK or later
 
 ### Running the Application
@@ -87,4 +95,5 @@ Then navigate to `http://localhost:5000` in your web browser.
 ```bash
 dotnet build
 ```
->>>>>>> origin/main
+
+> > > > > > > origin/main
