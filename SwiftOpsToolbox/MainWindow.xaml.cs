@@ -638,28 +638,41 @@ namespace SwiftOpsToolbox
 
         private void InitializeSettingsComboBoxes(ViewModels.MainViewModel vm)
         {
-            // Find and initialize Theme ComboBox
-            var themeCombo = FindComboBoxInSettingsPanel("Theme");
-            if (themeCombo != null)
+            try
             {
-                SelectComboBoxItemByContent(themeCombo, vm.Theme);
-            }
+                // Find and initialize Theme ComboBox
+                var themeCombo = FindComboBoxInSettingsPanel("Theme");
+                if (themeCombo != null)
+                {
+                    SelectComboBoxItemByContent(themeCombo, vm.Theme);
+                }
 
-            // Find and initialize DefaultView ComboBox
-            var defaultViewCombo = FindComboBoxInSettingsPanel("DefaultView");
-            if (defaultViewCombo != null)
-            {
-                SelectComboBoxItemByContent(defaultViewCombo, vm.DefaultView);
-            }
+                // Find and initialize DefaultView ComboBox
+                var defaultViewCombo = FindComboBoxInSettingsPanel("DefaultView");
+                if (defaultViewCombo != null)
+                {
+                    SelectComboBoxItemByContent(defaultViewCombo, vm.DefaultView);
+                }
 
-            // Find and initialize Tier ComboBox
-            var tierCombo = FindComboBoxInSettingsPanel("Tier");
-            if (tierCombo != null)
+                // Find and initialize Tier ComboBox
+                var tierCombo = FindComboBoxInSettingsPanel("Tier");
+                if (tierCombo != null)
+                {
+                    SelectComboBoxItemByContent(tierCombo, vm.CurrentTierName);
+                }
+            }
+            catch
             {
-                SelectComboBoxItemByContent(tierCombo, vm.CurrentTierName);
+                // Silently fail to prevent initialization errors from crashing the app
+                // ComboBoxes will remain at their default selections
             }
         }
 
+        /// <summary>
+        /// Finds a ComboBox in the settings panel by identifying its associated label.
+        /// Note: This method relies on UI structure and text content. For better reliability,
+        /// consider adding x:Name attributes to ComboBoxes in the XAML.
+        /// </summary>
         private System.Windows.Controls.ComboBox? FindComboBoxInSettingsPanel(string setting)
         {
             var settingsPanel = this.FindName("SettingsModePanel") as Grid;
@@ -668,6 +681,9 @@ namespace SwiftOpsToolbox
             return FindComboBoxRecursive(settingsPanel, setting);
         }
 
+        /// <summary>
+        /// Recursively searches for a ComboBox with an associated TextBlock label.
+        /// </summary>
         private System.Windows.Controls.ComboBox? FindComboBoxRecursive(DependencyObject parent, string setting)
         {
             int childCount = VisualTreeHelper.GetChildrenCount(parent);
@@ -700,9 +716,20 @@ namespace SwiftOpsToolbox
             return null;
         }
 
+        /// <summary>
+        /// Selects a ComboBoxItem by matching its Content string.
+        /// Silently fails if no matching item is found.
+        /// </summary>
         private void SelectComboBoxItemByContent(System.Windows.Controls.ComboBox combo, string content)
         {
-            combo.SelectedItem = combo.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content?.ToString() == content);
+            if (string.IsNullOrEmpty(content)) return;
+            
+            var matchingItem = combo.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content?.ToString() == content);
+            if (matchingItem != null)
+            {
+                combo.SelectedItem = matchingItem;
+            }
+            // If no match found, ComboBox retains its default selection
         }
 
         private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -726,7 +753,14 @@ namespace SwiftOpsToolbox
                 {
                     vm.Theme = themeName;
                     // Apply theme immediately
-                    ApplyTheme(themeName);
+                    try
+                    {
+                        ApplyTheme(themeName);
+                    }
+                    catch
+                    {
+                        // Ignore theme application errors to prevent crashes
+                    }
                 }
             }
         }
