@@ -681,17 +681,15 @@ namespace SwiftOpsToolbox
                     var container = VisualTreeHelper.GetParent(combo) as StackPanel;
                     if (container != null && container.Orientation == Orientation.Horizontal)
                     {
-                        foreach (var sibling in container.Children)
+                        var matchingTextBlock = container.Children.OfType<TextBlock>()
+                            .FirstOrDefault(tb => tb.Text != null && 
+                                ((setting == "Theme" && tb.Text.Contains("Theme")) ||
+                                 (setting == "DefaultView" && tb.Text.Contains("Default View")) ||
+                                 (setting == "Tier" && tb.Text.Contains("Switch Tier"))));
+                        
+                        if (matchingTextBlock != null)
                         {
-                            if (sibling is TextBlock tb && tb.Text != null)
-                            {
-                                if ((setting == "Theme" && tb.Text.Contains("Theme")) ||
-                                    (setting == "DefaultView" && tb.Text.Contains("Default View")) ||
-                                    (setting == "Tier" && tb.Text.Contains("Switch Tier")))
-                                {
-                                    return combo;
-                                }
-                            }
+                            return combo;
                         }
                     }
                 }
@@ -704,14 +702,7 @@ namespace SwiftOpsToolbox
 
         private void SelectComboBoxItemByContent(System.Windows.Controls.ComboBox combo, string content)
         {
-            foreach (var item in combo.Items)
-            {
-                if (item is ComboBoxItem cbItem && cbItem.Content?.ToString() == content)
-                {
-                    combo.SelectedItem = cbItem;
-                    break;
-                }
-            }
+            combo.SelectedItem = combo.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content?.ToString() == content);
         }
 
         private void TierComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
