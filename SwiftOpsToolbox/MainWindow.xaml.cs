@@ -648,14 +648,17 @@ namespace SwiftOpsToolbox
             if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
             {
                 var themeName = item.Content?.ToString();
-                if (!string.IsNullOrEmpty(themeName))
+                if (!string.IsNullOrEmpty(themeName) && vm.Theme != themeName)
                 {
                     // Update the Theme property which will trigger instant theme application via PropertyChanged
                     vm.Theme = themeName;
                     
                     // Auto-save the theme preference
-                    vm.SettingsService?.Settings.Theme = themeName;
-                    vm.SettingsService?.Save();
+                    if (vm.SettingsService?.Settings != null)
+                    {
+                        vm.SettingsService.Settings.Theme = themeName;
+                        vm.SettingsService.Save();
+                    }
                 }
             }
         }
