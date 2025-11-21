@@ -33,25 +33,25 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
                     <Button x:Name="BtnNew" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="New file (Ctrl+N)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="New" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnOpen" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Open file (Ctrl+O)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Open" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnSave" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Save file (Ctrl+S)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Save" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnSaveAs" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Save As">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Save As" Foreground="White" Opacity="0.95" FontSize="7" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
@@ -60,13 +60,13 @@
 
                     <Button x:Name="BtnUndo" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Undo (Ctrl+Z)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="?" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Undo" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnRedo" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Redo (Ctrl+Y)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="?" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Redo" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
@@ -75,19 +75,19 @@
 
                     <Button x:Name="BtnCut" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Cut (Ctrl+X)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Cut" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnCopy" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Copy (Ctrl+C)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Copy" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnPaste" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Paste (Ctrl+V)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Paste" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
@@ -96,13 +96,13 @@
 
                     <Button x:Name="BtnFind" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Find (Ctrl+F)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Find" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnReplace" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Replace (Ctrl+H)">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Replace" Foreground="White" Opacity="0.95" FontSize="7" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
@@ -111,13 +111,13 @@
 
                     <ToggleButton x:Name="BtnBold" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Bold">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="18" Text="B" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Bold" FontWeight="Bold" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </ToggleButton>
                     <ToggleButton x:Name="BtnItalic" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Italic">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" FontStyle="Italic" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="18" Text="I" FontStyle="Italic" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Italic" FontStyle="Italic" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </ToggleButton>
@@ -130,34 +130,20 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="2">
                     <ToggleButton x:Name="BtnPreview" Width="60" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="???" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Preview" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </ToggleButton>
                     <Button x:Name="BtnPopout" Width="60" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Open preview in separate window">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="?" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Popout" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>
 
-                    <ComboBox x:Name="FontFamilyCombo" Width="220" Margin="2" Foreground="White" Background="#202020">
-                        <ComboBox.Resources>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Background" Value="#202020" />
-                                <Setter Property="Foreground" Value="White" />
-                            </Style>
-                        </ComboBox.Resources>
-                    </ComboBox>
+                    <ComboBox x:Name="FontFamilyCombo" Width="220" Margin="2" Foreground="Black" Background="#202020" />
 
-                    <ComboBox x:Name="FontSizeCombo" Width="80" Margin="2" IsEditable="True" Foreground="White" Background="#202020">
-                        <ComboBox.Resources>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Background" Value="#202020" />
-                                <Setter Property="Foreground" Value="White" />
-                            </Style>
-                        </ComboBox.Resources>
-                    </ComboBox>
+                    <ComboBox x:Name="FontSizeCombo" Width="80" Margin="2" IsEditable="True" Foreground="Black" Background="#202020" />
                 </StackPanel>
             </Grid>
         </Border>

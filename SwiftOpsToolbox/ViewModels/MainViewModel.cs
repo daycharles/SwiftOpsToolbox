@@ -348,6 +348,13 @@ namespace SwiftOpsToolbox.ViewModels
             _timer.Tick += (s, e) => UpdateClockAndMemory();
             _timer.Start();
             UpdateClockAndMemory();
+
+            // START FILE INDEXING AUTOMATICALLY so FileSearchView has data
+            try
+            {
+                _fileIndexService.StartIndexing();
+            }
+            catch { }
         }
 
         // event raised when settings are saved (so UI can react)
