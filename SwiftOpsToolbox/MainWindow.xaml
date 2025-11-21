@@ -1046,7 +1046,8 @@
                                                Width="120"
                                                VerticalAlignment="Center" />
                                     <ComboBox Width="200"
-                                              SelectedValue="{Binding Theme, Mode=TwoWay}">
+                                              SelectedValue="{Binding Theme, Mode=TwoWay}"
+                                              SelectionChanged="ThemeComboBox_SelectionChanged">
                                         <ComboBoxItem Content="Dark" />
                                         <ComboBoxItem Content="Light" />
                                         <ComboBoxItem Content="Electric Blue" />

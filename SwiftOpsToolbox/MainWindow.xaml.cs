@@ -60,12 +60,13 @@ namespace SwiftOpsToolbox
             if (DataContext is ViewModels.MainViewModel vm)
             {
                 ApplyTheme(vm.Theme);
+                
+                // Subscribe to PropertyChanged to apply theme instantly when Theme property changes
+                vm.PropertyChanged += Vm_PropertyChanged;
+                
                 // Apply settings only when user saves
                 vm.SettingsSaved += (s, e) =>
                 {
-                    // apply theme
-                    ApplyTheme(vm.Theme);
-
                     // if configured to start on calendar, switch to calendar view
                     if (vm.StartOnCalendar)
                     {
@@ -638,6 +639,23 @@ namespace SwiftOpsToolbox
                 if (!string.IsNullOrEmpty(tierName))
                 {
                     vm.ChangeTierCommand?.Execute(tierName);
+                }
+            }
+        }
+
+        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            {
+                var themeName = item.Content?.ToString();
+                if (!string.IsNullOrEmpty(themeName))
+                {
+                    // Update the Theme property which will trigger instant theme application via PropertyChanged
+                    vm.Theme = themeName;
+                    
+                    // Auto-save the theme preference
+                    vm.SettingsService?.Settings.Theme = themeName;
+                    vm.SettingsService?.Save();
                 }
             }
         }
