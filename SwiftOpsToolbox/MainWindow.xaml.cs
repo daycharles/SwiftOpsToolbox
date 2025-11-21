@@ -657,21 +657,23 @@ namespace SwiftOpsToolbox
 
         private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is System.Windows.Controls.ComboBox combo && combo.SelectedItem is ComboBoxItem item && DataContext is ViewModels.MainViewModel vm)
+            // Extract the selected theme name
+            if (sender is not System.Windows.Controls.ComboBox combo) return;
+            if (combo.SelectedItem is not ComboBoxItem item) return;
+            if (DataContext is not ViewModels.MainViewModel vm) return;
+            
+            var themeName = item.Content?.ToString();
+            if (string.IsNullOrEmpty(themeName) || vm.Theme == themeName) return;
+            
+            // Update the Theme property which will trigger instant theme application via PropertyChanged
+            vm.Theme = themeName;
+            
+            // Auto-save the theme preference
+            if (vm.SettingsService?.Settings != null)
             {
-                var themeName = item.Content?.ToString();
-                if (!string.IsNullOrEmpty(themeName) && vm.Theme != themeName)
-                {
-                    // Update the Theme property which will trigger instant theme application via PropertyChanged
-                    vm.Theme = themeName;
-                    
-                    // Auto-save the theme preference
-                    if (vm.SettingsService?.Settings != null)
-                    {
-                        vm.SettingsService.Settings.Theme = themeName;
-                        vm.SettingsService.Save();
-                    }
-                }
+                vm.SettingsService.Settings.Theme = themeName;
+                vm.SettingsService.Save();
+            }
             }
         }
     }
