@@ -15,4 +15,9 @@
     <None Remove="SwiftOpsToolbox/**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.73.0" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.72.0.3953" />
+  </ItemGroup>
+
 </Project>

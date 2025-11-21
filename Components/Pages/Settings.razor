@@ -1,0 +1,157 @@
+@page "/settings"
+@using SwiftOpsToolbox.Services
+@inject GoogleCalendarAuthService GoogleAuthService
+@inject GoogleCalendarIntegrationService GoogleIntegrationService
+@rendermode InteractiveServer
+
+<PageTitle>Settings - Google Calendar</PageTitle>
+
+<div class="settings-container">
+    <h1>⚙️ Settings</h1>
+    
+    <div class="settings-section">
+        <h2>Google Calendar Integration</h2>
+        
+        @if (IsConnected)
+        {
+            <div class="status-card connected">
+                <div class="status-icon">✅</div>
+                <div class="status-info">
+                    <h3>Connected to Google Calendar</h3>
+                    <p>Your calendar is synced with Google Calendar</p>
+                    <button class="btn btn-danger" @onclick="DisconnectGoogleCalendar">
+                        Disconnect
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="status-card disconnected">
+                <div class="status-icon">📅</div>
+                <div class="status-info">
+                    <h3>Google Calendar Not Connected</h3>
+                    <p>Connect your Google account to sync your calendar events</p>
+                    
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> @ErrorMessage
+                        </div>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(StatusMessage))
+                    {
+                        <div class="alert alert-info">
+                            @StatusMessage
+                        </div>
+                    }
+                    
+                    <button class="btn btn-primary" @onclick="ConnectGoogleCalendar" disabled="@IsConnecting">
+                        @if (IsConnecting)
+                        {
+                            <span>Connecting...</span>
+                        }
+                        else
+                        {
+                            <span>Connect Google Calendar</span>
+                        }
+                    </button>
+                </div>
+            </div>
+        }
+        
+        <div class="info-card">
+            <h3>📋 Setup Instructions</h3>
+            <ol>
+                <li>Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+                <li>Create a new project or select an existing one</li>
+                <li>Enable the Google Calendar API</li>
+                <li>Create OAuth 2.0 credentials (Desktop app type)</li>
+                <li>Download the credentials JSON file</li>
+                <li>Add ClientId and ClientSecret to your appsettings.json:
+                    <pre class="code-block">
+"GoogleCalendar": {
+  "ClientId": "your-client-id.apps.googleusercontent.com",
+  "ClientSecret": "your-client-secret",
+  "ApplicationName": "SwiftOpsToolbox"
+}</pre>
+                </li>
+                <li>Restart the application and click "Connect Google Calendar"</li>
+            </ol>
+        </div>
+        
+        <div class="info-card">
+            <h3>🔒 Privacy & Security</h3>
+            <ul>
+                <li>Your credentials are stored securely using Google's authorization library</li>
+                <li>The app only requests access to your calendar events</li>
+                <li>You can revoke access at any time from your Google account settings</li>
+                <li>Calendar data is synced but not stored permanently on our servers</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool IsConnected => GoogleIntegrationService.IsConnected;
+    private bool IsConnecting = false;
+    private string ErrorMessage = string.Empty;
+    private string StatusMessage = string.Empty;
+
+    private async Task ConnectGoogleCalendar()
+    {
+        IsConnecting = true;
+        ErrorMessage = string.Empty;
+        StatusMessage = "Opening browser for authentication...";
+        StateHasChanged();
+
+        try
+        {
+            var success = await GoogleAuthService.AuthenticateAsync();
+            
+            if (success)
+            {
+                StatusMessage = "Successfully connected to Google Calendar!";
+                ErrorMessage = string.Empty;
+            }
+            else
+            {
+                ErrorMessage = "Failed to connect to Google Calendar. Please try again.";
+                StatusMessage = string.Empty;
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            ErrorMessage = ex.Message;
+            StatusMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"An error occurred: {ex.Message}";
+            StatusMessage = string.Empty;
+        }
+        finally
+        {
+            IsConnecting = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DisconnectGoogleCalendar()
+    {
+        try
+        {
+            await GoogleAuthService.SignOutAsync();
+            StatusMessage = "Disconnected from Google Calendar";
+            ErrorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error disconnecting: {ex.Message}";
+            StatusMessage = string.Empty;
+        }
+        
+        StateHasChanged();
+    }
+}

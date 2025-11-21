@@ -20,10 +20,27 @@
                 <span class="text">Next</span>
             </button>
         </div>
-        <button class="icon-text-btn success" @onclick="ShowAddEventModal">
-            <span class="icon">➕</span>
-            <span class="text">Add Event</span>
-        </button>
+        <div class="calendar-actions">
+            @if (CalendarService.IsGoogleCalendarConnected)
+            {
+                <button class="icon-text-btn info" @onclick="SyncWithGoogle" disabled="@IsSyncing">
+                    <span class="icon">🔄</span>
+                    <span class="text">@(IsSyncing ? "Syncing..." : "Sync with Google")</span>
+                </button>
+                <span class="sync-status">✅ Google Calendar Connected</span>
+            }
+            else
+            {
+                <a href="/settings" class="icon-text-btn secondary">
+                    <span class="icon">⚙️</span>
+                    <span class="text">Connect Google</span>
+                </a>
+            }
+            <button class="icon-text-btn success" @onclick="ShowAddEventModal">
+                <span class="icon">➕</span>
+                <span class="text">Add Event</span>
+            </button>
+        </div>
     </div>
 
     <div class="calendar-grid">
@@ -168,12 +185,40 @@
     private bool ShowEventModal = false;
     private CalendarEvent EditingEvent = new();
     private string ValidationError = string.Empty;
+    private bool IsSyncing = false;
 
     private class CalendarDay
     {
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
         public List<CalendarEvent> Events { get; set; } = new();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Auto-sync on load if Google Calendar is connected
+        await SyncWithGoogle();
+    }
+    
+    private async Task SyncWithGoogle()
+    {
+        if (!CalendarService.IsGoogleCalendarConnected || IsSyncing)
+        {
+            return;
+        }
+        
+        IsSyncing = true;
+        StateHasChanged();
+        
+        try
+        {
+            await CalendarService.SyncWithGoogleCalendarAsync(CurrentDate.Year, CurrentDate.Month);
+        }
+        finally
+        {
+            IsSyncing = false;
+            StateHasChanged();
+        }
     }
 
     private IEnumerable<CalendarDay> GetCalendarDays()
@@ -211,16 +256,18 @@
         return days;
     }
 
-    private void PreviousMonth()
+    private async Task PreviousMonth()
     {
         CurrentDate = CurrentDate.AddMonths(-1);
         SelectedDay = null;
+        await SyncWithGoogle();
     }
 
-    private void NextMonth()
+    private async Task NextMonth()
     {
         CurrentDate = CurrentDate.AddMonths(1);
         SelectedDay = null;
+        await SyncWithGoogle();
     }
 
     private void SelectDay(DateTime date)
@@ -248,7 +295,8 @@
             Description = evt.Description,
             StartTime = evt.StartTime,
             EndTime = evt.EndTime,
-            Color = evt.Color
+            Color = evt.Color,
+            GoogleEventId = evt.GoogleEventId
         };
         ShowEventModal = true;
     }
@@ -260,7 +308,7 @@
         ValidationError = string.Empty;
     }
 
-    private void SaveEvent()
+    private async Task SaveEvent()
     {
         if (string.IsNullOrWhiteSpace(EditingEvent.Title))
         {
@@ -278,21 +326,21 @@
 
         if (EditingEvent.Id == 0)
         {
-            CalendarService.AddEvent(EditingEvent);
+            await CalendarService.AddEventAsync(EditingEvent);
         }
         else
         {
-            CalendarService.UpdateEvent(EditingEvent);
+            await CalendarService.UpdateEventAsync(EditingEvent);
         }
         
         CloseModal();
     }
 
-    private void DeleteEvent()
+    private async Task DeleteEvent()
     {
         if (EditingEvent.Id != 0)
         {
-            CalendarService.DeleteEvent(EditingEvent.Id);
+            await CalendarService.DeleteEventAsync(EditingEvent.Id);
             CloseModal();
             SelectedDay = null;
         }
