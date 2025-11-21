@@ -1,0 +1,279 @@
+@page "/calendar"
+@using SwiftOpsToolbox.Models
+@using SwiftOpsToolbox.Services
+@inject CalendarService CalendarService
+@rendermode InteractiveServer
+
+<PageTitle>Calendar - Monthly Planner</PageTitle>
+
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h1>📅 Monthly Planner</h1>
+        <div class="calendar-navigation">
+            <button class="btn btn-primary" @onclick="PreviousMonth">← Previous</button>
+            <h2>@CurrentDate.ToString("MMMM yyyy")</h2>
+            <button class="btn btn-primary" @onclick="NextMonth">Next →</button>
+        </div>
+        <button class="btn btn-success" @onclick="ShowAddEventModal">+ Add Event</button>
+    </div>
+
+    <div class="calendar-grid">
+        <div class="calendar-weekdays">
+            <div class="weekday">Sunday</div>
+            <div class="weekday">Monday</div>
+            <div class="weekday">Tuesday</div>
+            <div class="weekday">Wednesday</div>
+            <div class="weekday">Thursday</div>
+            <div class="weekday">Friday</div>
+            <div class="weekday">Saturday</div>
+        </div>
+
+        <div class="calendar-days">
+            @foreach (var day in GetCalendarDays())
+            {
+                <div class="calendar-day @(day.IsCurrentMonth ? "" : "other-month") @(day.Date.Date == DateTime.Today ? "today" : "")" 
+                     @onclick="() => SelectDay(day.Date)">
+                    <div class="day-number">@day.Date.Day</div>
+                    <div class="day-events">
+                        @foreach (var evt in day.Events.Take(3))
+                        {
+                            <div class="event-item" style="background-color: @evt.Color" title="@evt.Title - @evt.Description">
+                                <span class="event-time">@(evt.IsAllDay ? "All Day" : evt.StartTime.ToString("HH:mm"))</span>
+                                <span class="event-title">@evt.Title</span>
+                            </div>
+                        }
+                        @if (day.Events.Count() > 3)
+                        {
+                            <div class="event-more">+@(day.Events.Count() - 3) more</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (ShowEventModal)
+    {
+        <div class="modal-backdrop" @onclick="CloseModal"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>@(EditingEvent.Id == 0 ? "Add New Event" : "Edit Event")</h3>
+                    <button class="btn-close" @onclick="CloseModal">×</button>
+                </div>
+                <div class="modal-body">
+                    @if (!string.IsNullOrWhiteSpace(ValidationError))
+                    {
+                        <div class="alert alert-danger">@ValidationError</div>
+                    }
+                    <div class="form-group">
+                        <label>Title: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="EditingEvent.Title" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control" @bind="EditingEvent.Description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date & Time:</label>
+                        <input type="datetime-local" class="form-control" @bind="EditingEvent.StartTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>End Date & Time:</label>
+                        <input type="datetime-local" class="form-control" @bind="EditingEvent.EndTime" />
+                    </div>
+                    <div class="form-group">
+                        <label>Color:</label>
+                        <input type="color" class="form-control" @bind="EditingEvent.Color" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if (EditingEvent.Id != 0)
+                    {
+                        <button class="btn btn-danger" @onclick="DeleteEvent">Delete</button>
+                    }
+                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                    <button class="btn btn-primary" @onclick="SaveEvent">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @if (SelectedDay.HasValue)
+    {
+        <div class="day-details">
+            <h3>Events on @SelectedDay.Value.ToString("MMMM d, yyyy")</h3>
+            @{
+                var dayEvents = CalendarService.GetEventsForDay(SelectedDay.Value).ToList();
+            }
+            @if (dayEvents.Any())
+            {
+                <div class="event-list">
+                    @foreach (var evt in dayEvents)
+                    {
+                        <div class="event-card" style="border-left: 4px solid @evt.Color" @onclick="() => EditEvent(evt)">
+                            <div class="event-card-header">
+                                <strong>@evt.Title</strong>
+                                <span class="event-card-time">
+                                    @if (evt.IsAllDay)
+                                    {
+                                        <text>All Day</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@evt.StartTime.ToString("HH:mm") - @evt.EndTime.ToString("HH:mm")</text>
+                                    }
+                                </span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(evt.Description))
+                            {
+                                <div class="event-card-description">@evt.Description</div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No events scheduled for this day.</p>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private DateTime CurrentDate = DateTime.Today;
+    private DateTime? SelectedDay = null;
+    private bool ShowEventModal = false;
+    private CalendarEvent EditingEvent = new();
+    private string ValidationError = string.Empty;
+
+    private class CalendarDay
+    {
+        public DateTime Date { get; set; }
+        public bool IsCurrentMonth { get; set; }
+        public List<CalendarEvent> Events { get; set; } = new();
+    }
+
+    private IEnumerable<CalendarDay> GetCalendarDays()
+    {
+        var firstDayOfMonth = new DateTime(CurrentDate.Year, CurrentDate.Month, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+        
+        // Start from the Sunday before or on the first day of the month
+        var startDate = firstDayOfMonth.AddDays(-(int)firstDayOfMonth.DayOfWeek);
+        
+        // End on the Saturday after or on the last day of the month
+        var endDate = lastDayOfMonth.AddDays(6 - (int)lastDayOfMonth.DayOfWeek);
+        
+        // Batch load all events for the visible date range
+        var allEventsInRange = CalendarService.GetEventsForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
+        
+        var days = new List<CalendarDay>();
+        var currentDate = startDate;
+        
+        while (currentDate <= endDate)
+        {
+            var isCurrentMonth = currentDate.Month == CurrentDate.Month;
+            var eventsForDay = allEventsInRange.Where(e => e.StartTime.Date == currentDate.Date).ToList();
+            
+            days.Add(new CalendarDay
+            {
+                Date = currentDate,
+                IsCurrentMonth = isCurrentMonth,
+                Events = eventsForDay
+            });
+            
+            currentDate = currentDate.AddDays(1);
+        }
+        
+        return days;
+    }
+
+    private void PreviousMonth()
+    {
+        CurrentDate = CurrentDate.AddMonths(-1);
+        SelectedDay = null;
+    }
+
+    private void NextMonth()
+    {
+        CurrentDate = CurrentDate.AddMonths(1);
+        SelectedDay = null;
+    }
+
+    private void SelectDay(DateTime date)
+    {
+        SelectedDay = date;
+    }
+
+    private void ShowAddEventModal()
+    {
+        EditingEvent = new CalendarEvent
+        {
+            StartTime = SelectedDay ?? DateTime.Today,
+            EndTime = (SelectedDay ?? DateTime.Today).AddHours(1),
+            Color = "#3788d8"
+        };
+        ShowEventModal = true;
+    }
+
+    private void EditEvent(CalendarEvent evt)
+    {
+        EditingEvent = new CalendarEvent
+        {
+            Id = evt.Id,
+            Title = evt.Title,
+            Description = evt.Description,
+            StartTime = evt.StartTime,
+            EndTime = evt.EndTime,
+            Color = evt.Color
+        };
+        ShowEventModal = true;
+    }
+
+    private void CloseModal()
+    {
+        ShowEventModal = false;
+        EditingEvent = new();
+        ValidationError = string.Empty;
+    }
+
+    private void SaveEvent()
+    {
+        if (string.IsNullOrWhiteSpace(EditingEvent.Title))
+        {
+            ValidationError = "Title is required.";
+            return;
+        }
+
+        if (EditingEvent.EndTime < EditingEvent.StartTime)
+        {
+            ValidationError = "End time must be after start time.";
+            return;
+        }
+
+        ValidationError = string.Empty;
+
+        if (EditingEvent.Id == 0)
+        {
+            CalendarService.AddEvent(EditingEvent);
+        }
+        else
+        {
+            CalendarService.UpdateEvent(EditingEvent);
+        }
+        
+        CloseModal();
+    }
+
+    private void DeleteEvent()
+    {
+        if (EditingEvent.Id != 0)
+        {
+            CalendarService.DeleteEvent(EditingEvent.Id);
+            CloseModal();
+            SelectedDay = null;
+        }
+    }
+}
