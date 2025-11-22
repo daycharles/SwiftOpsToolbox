@@ -547,6 +547,44 @@
     }
 }
 
+/* Calendar Actions */
+.calendar-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.sync-status {
+    font-size: 0.9rem;
+    color: #28a745;
+    font-weight: 500;
+}
+
+.icon-text-btn.info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.icon-text-btn.info:hover:not(:disabled) {
+    background-color: #138496;
+}
+
+.icon-text-btn.info:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.icon-text-btn.secondary {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+}
+
+.icon-text-btn.secondary:hover {
+    background-color: #5a6268;
+}
+
 @media (min-width: 769px) and (max-width: 1200px) {
     .calendar-main-section {
         min-width: 600px;
