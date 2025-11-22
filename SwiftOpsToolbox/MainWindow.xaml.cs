@@ -173,25 +173,19 @@ namespace SwiftOpsToolbox
         // Helper: show or hide the agenda (right card) and adjust column widths
         private void SetAgendaVisible(bool visible)
         {
+            // Keep agenda UI in the XAML for future use, but force it to remain hidden now.
             if (FindName("RightCardBorder") is System.Windows.Controls.Border rc)
             {
-                rc.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+                rc.Visibility = Visibility.Collapsed;
             }
 
             var leftCol = FindName("LeftColumn") as ColumnDefinition;
             var rightCol = FindName("RightColumn") as ColumnDefinition;
             if (leftCol != null && rightCol != null)
             {
-                if (visible)
-                {
-                    leftCol.Width = new GridLength(3, GridUnitType.Star);
-                    rightCol.Width = new GridLength(2, GridUnitType.Star);
-                }
-                else
-                {
-                    leftCol.Width = new GridLength(1, GridUnitType.Star);
-                    rightCol.Width = new GridLength(0, GridUnitType.Pixel);
-                }
+                // Always expand left column to occupy full available space and collapse right column
+                leftCol.Width = new GridLength(1, GridUnitType.Star);
+                rightCol.Width = new GridLength(0, GridUnitType.Pixel);
             }
         }
 

@@ -26,14 +26,14 @@
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button x:Name="BtnOpenLog" Width="80" Height="50" Margin="8,0,0,0">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
-                        <TextBlock Text="Open Log" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="Black" HorizontalAlignment="Center" />
+                        <TextBlock Text="Open Log" Foreground="Black" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="BtnSftpToggle" Width="70" Height="50" Margin="8,0,0,0">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="White" HorizontalAlignment="Center" />
-                        <TextBlock Text="SFTP" Foreground="White" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="?" FontSize="14" Foreground="Black" HorizontalAlignment="Center" />
+                        <TextBlock Text="SFTP" Foreground="Black" Opacity="0.95" FontSize="8" HorizontalAlignment="Center" Margin="0,2,0,0" />
                     </StackPanel>
                 </Button>
             </StackPanel>
