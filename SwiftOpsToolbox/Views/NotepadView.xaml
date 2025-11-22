@@ -51,7 +51,7 @@
                     </Button>
                     <Button x:Name="BtnSaveAs" Width="50" Height="50" Margin="2" Foreground="White" Background="Transparent" BorderBrush="#333" ToolTip="Save As">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="??" Foreground="White" HorizontalAlignment="Center" />
+                            <TextBlock FontFamily="Segoe UI Emoji" FontSize="18" Text="????" Foreground="White" HorizontalAlignment="Center" />
                             <TextBlock Text="Save As" Foreground="White" Opacity="0.95" FontSize="7" HorizontalAlignment="Center" Margin="0,2,0,0" />
                         </StackPanel>
                     </Button>

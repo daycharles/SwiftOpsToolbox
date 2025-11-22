@@ -13,7 +13,9 @@
         <None Remove="SwiftOpsToolboxLogo.PNG" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="SwiftOpsToolboxLogoNoTextPNG.ico" />
+        <Content Include="SwiftOpsToolboxLogoNoTextPNG.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />

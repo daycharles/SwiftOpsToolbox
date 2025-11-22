@@ -15,6 +15,7 @@ namespace SwiftOpsToolbox.Views
             public int Day { get; set; }
             public ObservableCollection<CalendarEvent> Events { get; set; } = new ObservableCollection<CalendarEvent>();
             public DateTime Date { get; set; }
+            public bool IsCurrentMonth { get; set; }
         }
 
         public MonthGridView()
@@ -22,8 +23,21 @@ namespace SwiftOpsToolbox.Views
             InitializeComponent();
         }
 
+        // Expose MonthTitle so XAML can bind and show current month
+        public static readonly DependencyProperty MonthTitleProperty = DependencyProperty.Register(
+            nameof(MonthTitle), typeof(string), typeof(MonthGridView), new PropertyMetadata(string.Empty));
+
+        public string MonthTitle
+        {
+            get => (string)GetValue(MonthTitleProperty);
+            set => SetValue(MonthTitleProperty, value);
+        }
+
         public void SetMonth(DateTime date, IEnumerable<CalendarEvent> events)
         {
+            // Set display title
+            MonthTitle = date.ToString("MMMM yyyy");
+
             // Build 6x7 month grid starting Sunday
             var start = new DateTime(date.Year, date.Month, 1);
             // find previous Sunday
@@ -34,7 +48,7 @@ namespace SwiftOpsToolbox.Views
             for (int i = 0; i < 42; i++)
             {
                 var d = gridStart.AddDays(i);
-                var vm = new DayVm { Day = d.Day, Date = d };
+                var vm = new DayVm { Day = d.Day, Date = d, IsCurrentMonth = d.Month == date.Month };
 
                 // include events that start/end across this date
                 var dayEvents = events.Where(ev => ev.StartDate.Date <= d.Date && ev.EndDate.Date >= d.Date);

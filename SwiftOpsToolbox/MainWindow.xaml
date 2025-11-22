@@ -328,12 +328,21 @@
                            Margin="6,4"
                            FontSize="14" />
                 <StackPanel Margin="0,12,0,0">
+                    <!-- Replace BtnTasks button to use BasedOn style only -->
                     <Button x:Name="BtnTasks"
                             Click="BtnTasks_Click"
-                            Style="{StaticResource SidebarButtonStyle}"
                             Width="120"
                             Height="44"
                             Margin="0,4">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=HomePanel, Path=Visibility}" Value="Visible">
+                                        <Setter Property="Background" Value="#1B3F8A" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="16"
                                        Text="🏠"
@@ -343,6 +352,8 @@
                                        Margin="10,0" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Replace BtnCalendar to use BasedOn style only -->
                     <Button x:Name="BtnCalendar"
                             Click="BtnCalendar_Click"
                             Width="120"
@@ -351,11 +362,10 @@
                             ToolTip="Calendar"
                             Visibility="{Binding CalendarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.CalendarVisible, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="True">
+                                    <DataTrigger Binding="{Binding ElementName=CalendarModePanel, Path=Visibility}"
+                                                 Value="Visible">
                                         <Setter Property="Background"
                                                 Value="#1B3F8A" />
                                     </DataTrigger>
@@ -371,6 +381,8 @@
                                        Margin="10,0" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Replace BtnClipboard to use BasedOn style only -->
                     <Button x:Name="BtnClipboard"
                             Click="BtnClipboard_Click"
                             Width="120"
@@ -378,11 +390,10 @@
                             Margin="0,4"
                             Visibility="{Binding ClipboardVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.ClipboardVisible, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="True">
+                                    <DataTrigger Binding="{Binding ElementName=ClipboardModePanel, Path=Visibility}"
+                                                 Value="Visible">
                                         <Setter Property="Background"
                                                 Value="#1B3F8A" />
                                     </DataTrigger>
@@ -398,6 +409,8 @@
                                        Margin="10,0" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Replace BtnNotepad to use BasedOn style only -->
                     <Button x:Name="BtnNotepad"
                             Click="BtnNotepad_Click"
                             Width="120"
@@ -405,11 +418,10 @@
                             Margin="0,4"
                             Visibility="{Binding NotepadVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.NotepadVisible, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="True">
+                                    <DataTrigger Binding="{Binding ElementName=NotepadModePanel, Path=Visibility}"
+                                                 Value="Visible">
                                         <Setter Property="Background"
                                                 Value="#1B3F8A" />
                                     </DataTrigger>
@@ -425,6 +437,8 @@
                                        Margin="10,0" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Replace BtnSearch to use BasedOn style only -->
                     <Button x:Name="BtnSearch"
                             Click="BtnSearch_Click"
                             Width="120"
@@ -432,11 +446,10 @@
                             Margin="0,4"
                             Visibility="{Binding FileSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.FileSearchVisible, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="True">
+                                    <DataTrigger Binding="{Binding ElementName=SearchModePanel, Path=Visibility}"
+                                                 Value="Visible">
                                         <Setter Property="Background"
                                                 Value="#1B3F8A" />
                                     </DataTrigger>
@@ -452,11 +465,22 @@
                                        Margin="10,0" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Replace BtnSettings to use BasedOn style only -->
                     <Button x:Name="BtnSettings"
                             Click="BtnSettings_Click"
                             Width="120"
                             Height="44"
-                            Margin="0,14,0,0">
+                            Margin="0,14,0,0" Visibility="Hidden">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=SettingsModePanel, Path=Visibility}" Value="Visible">
+                                        <Setter Property="Background" Value="#1B3F8A" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="16"
                                        Text="⚙️"
@@ -511,9 +535,10 @@
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="LeftColumn"
-                                      Width="3*" />
+                                      Width="*" />
+                    <!-- Keep RightColumn defined so runtime code can re-enable agenda later, but collapsed by default -->
                     <ColumnDefinition x:Name="RightColumn"
-                                      Width="2*" />
+                                      Width="0" />
                 </Grid.ColumnDefinitions>
                 <!-- Left area root: holds mode panels -->
                 <Grid Grid.Column="0">
@@ -888,16 +913,75 @@
                             Style="{StaticResource CardStyle}">
                         <views:FileSearchView />
                     </Border>
-                    <!-- Settings panel unchanged -->
+                    <!-- Settings panel -->
                     <Grid x:Name="SettingsModePanel"
                           Visibility="Collapsed">
-                        <!-- existing settings content -->
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel Margin="8" Width="540">
+                                <TextBlock Text="Settings"
+                                           Foreground="White"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,12" />
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+                                    <TextBlock Text="Account Tier:" Width="120" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="TierComboBox" Width="200" SelectedValuePath="Content" SelectionChanged="TierComboBox_SelectionChanged"
+                                              SelectedValue="{Binding CurrentTierName, Mode=TwoWay}">
+                                        <ComboBoxItem Content="Free" />
+                                        <ComboBoxItem Content="Pro" />
+                                        <ComboBoxItem Content="Business" />
+                                        <ComboBoxItem Content="Enterprise" />
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+                                    <TextBlock Text="Theme:" Width="120" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="ThemeComboBox" Width="200" SelectionChanged="ThemeComboBox_SelectionChanged"
+                                              SelectedValue="{Binding Theme, Mode=TwoWay}">
+                                        <ComboBoxItem Content="Dark" />
+                                        <ComboBoxItem Content="Light" />
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+                                    <TextBlock Text="Default View:" Width="120" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="DefaultViewComboBox" Width="200" SelectionChanged="DefaultViewComboBox_SelectionChanged"
+                                              SelectedValue="{Binding DefaultView, Mode=TwoWay}">
+                                        <ComboBoxItem Content="Month" />
+                                        <ComboBoxItem Content="Week" />
+                                        <ComboBoxItem Content="Day" />
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+                                    <TextBlock Text="Start on Calendar:" Width="120" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" />
+                                    <CheckBox x:Name="StartOnCalendarCheckBox" IsChecked="{Binding StartOnCalendar, Mode=TwoWay}" Checked="StartOnCalendarCheckBox_Changed" Unchecked="StartOnCalendarCheckBox_Changed" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12" VerticalAlignment="Center">
+                                    <TextBlock Text="Use 24-hour time:" Width="120" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" />
+                                    <CheckBox x:Name="Use24HourCheckBox" IsChecked="{Binding Use24Hour, Mode=TwoWay}" Checked="Use24HourCheckBox_Changed" Unchecked="Use24HourCheckBox_Changed" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Left">
+                                    <Button Width="120" Height="36" Command="{Binding SaveSettingsCommand}" Background="{StaticResource ElectricBlue}" Foreground="White" BorderThickness="0" Margin="0,0,8,0">Save</Button>
+                                    <Button Width="120" Height="36" Command="{Binding OpenLogCommand}" Background="#333" Foreground="White" BorderThickness="0">Open Log</Button>
+                                </StackPanel>
+
+                                <TextBlock Text="Indexed Roots" Foreground="White" FontWeight="SemiBold" Margin="0,16,0,6" />
+                                <ListBox ItemsSource="{Binding IndexedRoots}" Height="100" Background="Transparent" BorderThickness="1" />
+
+                                <!-- Note: controls use existing ViewModel properties and code-behind handlers for interactions -->
+                            </StackPanel>
+                        </Border>
                     </Grid>
                 </Grid>
-                <!-- Right card (agenda) - always visible -->
+                <!-- Right card (agenda) - hidden for now -->
                 <Border x:Name="RightCardBorder"
                         Grid.Column="1"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardStyle}"
+                        Visibility="Collapsed">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

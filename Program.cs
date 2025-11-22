@@ -19,6 +19,9 @@ builder.Services.AddSingleton<GoogleCalendarIntegrationService>();
 // Add Calendar Service
 builder.Services.AddSingleton<CalendarService>();
 
+// Add Holiday Service
+builder.Services.AddSingleton<HolidayService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
