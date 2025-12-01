@@ -27,13 +27,16 @@
     <ItemGroup>
         <Resource Include="SwiftOpsToolboxLogo.PNG" />
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Converters\" />
-    </ItemGroup>
     <!-- Copy docs to output so runtime can load USER_DOCUMENTATION.md easily -->
     <ItemGroup>
         <Content Include="..\..\docs\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Converters\**" />
+      <EmbeddedResource Remove="Converters\**" />
+      <None Remove="Converters\**" />
+      <Page Remove="Converters\**" />
     </ItemGroup>
 </Project>

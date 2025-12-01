@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/home/runner/work/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox.csproj": {}
+    "D:\\CU-TECH\\Development\\Internal Apps\\SwiftOpsToolbox\\SwiftOpsToolbox\\SwiftOpsToolbox.csproj": {}
   },
   "projects": {
-    "/home/runner/work/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox.csproj": {
+    "D:\\CU-TECH\\Development\\Internal Apps\\SwiftOpsToolbox\\SwiftOpsToolbox\\SwiftOpsToolbox.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/runner/work/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox.csproj",
+        "projectUniqueName": "D:\\CU-TECH\\Development\\Internal Apps\\SwiftOpsToolbox\\SwiftOpsToolbox\\SwiftOpsToolbox.csproj",
         "projectName": "SwiftOpsToolbox",
-        "projectPath": "/home/runner/work/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox.csproj",
-        "packagesPath": "/home/runner/work/SwiftOpsToolbox/.codeql-scratch/dbs/csharp/working/packages",
-        "outputPath": "/home/runner/work/SwiftOpsToolbox/SwiftOpsToolbox/SwiftOpsToolbox/obj/",
+        "projectPath": "D:\\CU-TECH\\Development\\Internal Apps\\SwiftOpsToolbox\\SwiftOpsToolbox\\SwiftOpsToolbox.csproj",
+        "packagesPath": "C:\\Users\\cd104535\\.nuget\\packages\\",
+        "outputPath": "D:\\CU-TECH\\Development\\Internal Apps\\SwiftOpsToolbox\\SwiftOpsToolbox\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Program Files\\Microsoft\\Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/home/runner/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\cd104535\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -76,24 +83,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.22, 8.0.22]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -102,7 +91,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
