@@ -382,7 +382,16 @@ namespace SwiftOpsToolbox.Views
             if (rtb == null) return;
             if (FontFamilyCombo.SelectedItem is System.Windows.Media.FontFamily ff)
             {
-                rtb.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, ff);
+                // If there's a selection, apply to selection; otherwise apply to entire document so user sees change
+                if (rtb.Selection != null && !rtb.Selection.IsEmpty)
+                {
+                    rtb.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, ff);
+                }
+                else
+                {
+                    var range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                    range.ApplyPropertyValue(TextElement.FontFamilyProperty, ff);
+                }
             }
         }
 
@@ -393,7 +402,15 @@ namespace SwiftOpsToolbox.Views
             if (rtb == null) return;
             if (double.TryParse(FontSizeCombo.Text, out var size))
             {
-                rtb.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
+                if (rtb.Selection != null && !rtb.Selection.IsEmpty)
+                {
+                    rtb.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
+                }
+                else
+                {
+                    var range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                    range.ApplyPropertyValue(TextElement.FontSizeProperty, size);
+                }
             }
         }
 

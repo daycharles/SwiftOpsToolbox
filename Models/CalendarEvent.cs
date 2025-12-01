@@ -9,6 +9,11 @@ public class CalendarEvent
     public DateTime EndTime { get; set; }
     public string Color { get; set; } = "#3788d8";
     
+    /// <summary>
+    /// Google Calendar event ID for synchronization
+    /// </summary>
+    public string? GoogleEventId { get; set; }
+    
     public bool IsAllDay => StartTime.Date == EndTime.Date && 
                            StartTime.TimeOfDay == TimeSpan.Zero && 
                            EndTime.TimeOfDay == TimeSpan.Zero;

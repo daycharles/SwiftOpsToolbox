@@ -1,5 +1,6 @@
 using SwiftOpsToolbox.Components;
 using SwiftOpsToolbox.Services;
+using SwiftOpsToolbox.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Configure Google Calendar settings
+builder.Services.Configure<GoogleCalendarConfig>(
+    builder.Configuration.GetSection("GoogleCalendar"));
+
+// Add Google Calendar Services
+builder.Services.AddSingleton<GoogleCalendarAuthService>();
+builder.Services.AddSingleton<GoogleCalendarIntegrationService>();
+
 // Add Calendar Service
 builder.Services.AddSingleton<CalendarService>();
+
+// Add Holiday Service
+builder.Services.AddSingleton<HolidayService>();
 
 var app = builder.Build();
 

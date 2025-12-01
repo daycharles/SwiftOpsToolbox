@@ -186,6 +186,21 @@ namespace SwiftOpsToolbox.ViewModels
         public bool ClipboardVisible => _settingsService?.Settings?.Features?.ClipboardHistoryEnabled ?? true;
         public bool SftpVisible => _settingsService?.Settings?.Features?.SftpEnabled ?? false;
         
+        // Advanced features (Pro tier)
+        public bool AdvancedCalendarVisible => _settingsService?.Settings?.Features?.AdvancedCalendarEnabled ?? false;
+        public bool AdvancedMarkdownVisible => _settingsService?.Settings?.Features?.AdvancedMarkdownEnabled ?? false;
+        public bool AdvancedFileSearchVisible => _settingsService?.Settings?.Features?.AdvancedFileSearchEnabled ?? false;
+        
+        // Business features
+        public bool TeamSharingVisible => _settingsService?.Settings?.Features?.TeamSharingEnabled ?? false;
+        public bool CentralizedManagementVisible => _settingsService?.Settings?.Features?.CentralizedManagementEnabled ?? false;
+        public bool AuditLogsVisible => _settingsService?.Settings?.Features?.AuditLogsEnabled ?? false;
+        
+        // Enterprise features
+        public bool WhiteLabelingVisible => _settingsService?.Settings?.Features?.WhiteLabelingEnabled ?? false;
+        public bool DirectoryIntegrationVisible => _settingsService?.Settings?.Features?.DirectoryIntegrationEnabled ?? false;
+        public bool PrivateCloudVisible => _settingsService?.Settings?.Features?.PrivateCloudEnabled ?? false;
+        
         // Current tier display and setter
         public string CurrentTierName
         {
@@ -333,6 +348,13 @@ namespace SwiftOpsToolbox.ViewModels
             _timer.Tick += (s, e) => UpdateClockAndMemory();
             _timer.Start();
             UpdateClockAndMemory();
+
+            // START FILE INDEXING AUTOMATICALLY so FileSearchView has data
+            try
+            {
+                _fileIndexService.StartIndexing();
+            }
+            catch { }
         }
 
         // event raised when settings are saved (so UI can react)
@@ -353,6 +375,15 @@ namespace SwiftOpsToolbox.ViewModels
             OnPropertyChanged(nameof(FileSearchVisible));
             OnPropertyChanged(nameof(ClipboardVisible));
             OnPropertyChanged(nameof(SftpVisible));
+            OnPropertyChanged(nameof(AdvancedCalendarVisible));
+            OnPropertyChanged(nameof(AdvancedMarkdownVisible));
+            OnPropertyChanged(nameof(AdvancedFileSearchVisible));
+            OnPropertyChanged(nameof(TeamSharingVisible));
+            OnPropertyChanged(nameof(CentralizedManagementVisible));
+            OnPropertyChanged(nameof(AuditLogsVisible));
+            OnPropertyChanged(nameof(WhiteLabelingVisible));
+            OnPropertyChanged(nameof(DirectoryIntegrationVisible));
+            OnPropertyChanged(nameof(PrivateCloudVisible));
             OnPropertyChanged(nameof(CurrentTierName));
             OnPropertyChanged(nameof(CurrentTier));
         }

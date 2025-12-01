@@ -7,4 +7,17 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Exclude WPF project directory -->
+    <Compile Remove="SwiftOpsToolbox/**" />
+    <Content Remove="SwiftOpsToolbox/**" />
+    <EmbeddedResource Remove="SwiftOpsToolbox/**" />
+    <None Remove="SwiftOpsToolbox/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.73.0" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.72.0.3953" />
+  </ItemGroup>
+
 </Project>

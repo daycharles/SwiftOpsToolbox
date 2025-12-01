@@ -2,19 +2,47 @@
 @using SwiftOpsToolbox.Models
 @using SwiftOpsToolbox.Services
 @inject CalendarService CalendarService
+@inject HolidayService HolidayService
 @rendermode InteractiveServer
 
 <PageTitle>Calendar - Monthly Planner</PageTitle>
 
 <div class="calendar-container">
+    <div class="calendar-main-section">
     <div class="calendar-header">
         <h1>📅 Monthly Planner</h1>
         <div class="calendar-navigation">
-            <button class="btn btn-primary" @onclick="PreviousMonth">← Previous</button>
+            <button class="icon-text-btn primary" @onclick="PreviousMonth">
+                <span class="icon">⬅️</span>
+                <span class="text">Previous</span>
+            </button>
             <h2>@CurrentDate.ToString("MMMM yyyy")</h2>
-            <button class="btn btn-primary" @onclick="NextMonth">Next →</button>
+            <button class="icon-text-btn primary" @onclick="NextMonth">
+                <span class="icon">➡️</span>
+                <span class="text">Next</span>
+            </button>
         </div>
-        <button class="btn btn-success" @onclick="ShowAddEventModal">+ Add Event</button>
+        <div class="calendar-actions">
+            @if (CalendarService.IsGoogleCalendarConnected)
+            {
+                <button class="icon-text-btn info" @onclick="SyncWithGoogle" disabled="@IsSyncing">
+                    <span class="icon">🔄</span>
+                    <span class="text">@(IsSyncing ? "Syncing..." : "Sync with Google")</span>
+                </button>
+                <span class="sync-status">✅ Google Calendar Connected</span>
+            }
+            else
+            {
+                <a href="/settings" class="icon-text-btn secondary">
+                    <span class="icon">⚙️</span>
+                    <span class="text">Connect Google</span>
+                </a>
+            }
+            <button class="icon-text-btn success" @onclick="ShowAddEventModal">
+                <span class="icon">➕</span>
+                <span class="text">Add Event</span>
+            </button>
+        </div>
     </div>
 
     <div class="calendar-grid">
@@ -35,16 +63,27 @@
                      @onclick="() => SelectDay(day.Date)">
                     <div class="day-number">@day.Date.Day</div>
                     <div class="day-events">
-                        @foreach (var evt in day.Events.Take(3))
+                        @foreach (var holiday in day.Holidays)
+                        {
+                            <div class="event-item holiday-item" style="background-color: @holiday.Color" title="@holiday.Name - @holiday.Description">
+                                <span class="event-time">🎉</span>
+                                <span class="event-title">@holiday.Name</span>
+                            </div>
+                        }
+                        @foreach (var evt in day.Events.Take(Math.Max(0, 3 - day.Holidays.Count())))
                         {
                             <div class="event-item" style="background-color: @evt.Color" title="@evt.Title - @evt.Description">
                                 <span class="event-time">@(evt.IsAllDay ? "All Day" : evt.StartTime.ToString("HH:mm"))</span>
                                 <span class="event-title">@evt.Title</span>
                             </div>
                         }
-                        @if (day.Events.Count() > 3)
+                        @{
+                            var totalItems = day.Holidays.Count() + day.Events.Count();
+                            var displayedItems = day.Holidays.Count() + Math.Min(day.Events.Count(), 3 - day.Holidays.Count());
+                        }
+                        @if (totalItems > displayedItems)
                         {
-                            <div class="event-more">+@(day.Events.Count() - 3) more</div>
+                            <div class="event-more">+@(totalItems - displayedItems) more</div>
                         }
                     </div>
                 </div>
@@ -59,7 +98,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>@(EditingEvent.Id == 0 ? "Add New Event" : "Edit Event")</h3>
-                    <button class="btn-close" @onclick="CloseModal">×</button>
+                    <button class="icon-text-btn secondary" @onclick="CloseModal" style="min-width: 50px;">
+                        <span class="icon">✖️</span>
+                        <span class="text">Close</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     @if (!string.IsNullOrWhiteSpace(ValidationError))
@@ -90,10 +132,19 @@
                 <div class="modal-footer">
                     @if (EditingEvent.Id != 0)
                     {
-                        <button class="btn btn-danger" @onclick="DeleteEvent">Delete</button>
+                        <button class="icon-text-btn danger" @onclick="DeleteEvent">
+                            <span class="icon">🗑️</span>
+                            <span class="text">Delete</span>
+                        </button>
                     }
-                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
-                    <button class="btn btn-primary" @onclick="SaveEvent">Save</button>
+                    <button class="icon-text-btn secondary" @onclick="CloseModal">
+                        <span class="icon">❌</span>
+                        <span class="text">Cancel</span>
+                    </button>
+                    <button class="icon-text-btn primary" @onclick="SaveEvent">
+                        <span class="icon">💾</span>
+                        <span class="text">Save</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -105,10 +156,33 @@
             <h3>Events on @SelectedDay.Value.ToString("MMMM d, yyyy")</h3>
             @{
                 var dayEvents = CalendarService.GetEventsForDay(SelectedDay.Value).ToList();
+                var dayHolidays = HolidayService.GetHolidaysForDay(SelectedDay.Value).ToList();
+            }
+            @if (dayHolidays.Any())
+            {
+                <div class="event-list">
+                    <h4 style="color: #dc3545; margin-bottom: 10px;">🎉 Holidays</h4>
+                    @foreach (var holiday in dayHolidays)
+                    {
+                        <div class="event-card holiday-card" style="border-left: 4px solid @holiday.Color">
+                            <div class="event-card-header">
+                                <strong>@holiday.Name</strong>
+                                <span class="badge" style="background-color: @GetHolidayTypeBadgeColor(holiday.Type)">
+                                    @holiday.Type
+                                </span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(holiday.Description))
+                            {
+                                <div class="event-card-description">@holiday.Description</div>
+                            }
+                        </div>
+                    }
+                </div>
             }
             @if (dayEvents.Any())
             {
                 <div class="event-list">
+                    <h4 style="margin-bottom: 10px;">📅 Events</h4>
                     @foreach (var evt in dayEvents)
                     {
                         <div class="event-card" style="border-left: 4px solid @evt.Color" @onclick="() => EditEvent(evt)">
@@ -133,12 +207,95 @@
                     }
                 </div>
             }
-            else
+            @if (!dayEvents.Any() && !dayHolidays.Any())
             {
-                <p>No events scheduled for this day.</p>
+                <p>No events or holidays scheduled for this day.</p>
             }
         </div>
     }
+    </div>
+
+    <!-- Monthly Holidays & Events Side Panel -->
+    <div class="side-panel">
+        <div class="side-panel-header">
+            <h3>📅 @CurrentDate.ToString("MMMM yyyy")</h3>
+            <p class="side-panel-subtitle">Holidays & Events</p>
+        </div>
+        <div class="side-panel-content">
+            @{
+                var monthHolidays = HolidayService.GetHolidaysForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
+                var monthEvents = CalendarService.GetEventsForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
+            }
+            
+            @if (monthHolidays.Any())
+            {
+                <div class="panel-section">
+                    <h4 class="section-title">🎉 Holidays</h4>
+                    <div class="panel-items">
+                        @foreach (var holiday in monthHolidays)
+                        {
+                            <div class="panel-item holiday-panel-item" @onclick="() => SelectDay(holiday.Date)">
+                                <div class="panel-item-date">
+                                    <div class="date-day">@holiday.Date.Day</div>
+                                    <div class="date-weekday">@holiday.Date.ToString("ddd")</div>
+                                </div>
+                                <div class="panel-item-details">
+                                    <div class="panel-item-title" style="color: @holiday.Color">@holiday.Name</div>
+                                    <div class="panel-item-type">@holiday.Type Holiday</div>
+                                    @if (!string.IsNullOrEmpty(holiday.Description))
+                                    {
+                                        <div class="panel-item-description">@holiday.Description</div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            
+            @if (monthEvents.Any())
+            {
+                <div class="panel-section">
+                    <h4 class="section-title">📌 Events</h4>
+                    <div class="panel-items">
+                        @foreach (var evt in monthEvents)
+                        {
+                            <div class="panel-item" @onclick="() => SelectDay(evt.StartTime.Date)">
+                                <div class="panel-item-date">
+                                    <div class="date-day">@evt.StartTime.Day</div>
+                                    <div class="date-weekday">@evt.StartTime.ToString("ddd")</div>
+                                </div>
+                                <div class="panel-item-details">
+                                    <div class="panel-item-title" style="color: @evt.Color">@evt.Title</div>
+                                    <div class="panel-item-time">
+                                        @if (evt.IsAllDay)
+                                        {
+                                            <text>All Day</text>
+                                        }
+                                        else
+                                        {
+                                            <text>@evt.StartTime.ToString("HH:mm") - @evt.EndTime.ToString("HH:mm")</text>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(evt.Description))
+                                    {
+                                        <div class="panel-item-description">@evt.Description</div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            
+            @if (!monthHolidays.Any() && !monthEvents.Any())
+            {
+                <div class="panel-empty">
+                    <p>No holidays or events this month.</p>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @code {
@@ -147,12 +304,41 @@
     private bool ShowEventModal = false;
     private CalendarEvent EditingEvent = new();
     private string ValidationError = string.Empty;
+    private bool IsSyncing = false;
 
     private class CalendarDay
     {
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
         public List<CalendarEvent> Events { get; set; } = new();
+        public List<Holiday> Holidays { get; set; } = new();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Auto-sync on load if Google Calendar is connected
+        await SyncWithGoogle();
+    }
+    
+    private async Task SyncWithGoogle()
+    {
+        if (!CalendarService.IsGoogleCalendarConnected || IsSyncing)
+        {
+            return;
+        }
+        
+        IsSyncing = true;
+        StateHasChanged();
+        
+        try
+        {
+            await CalendarService.SyncWithGoogleCalendarAsync(CurrentDate.Year, CurrentDate.Month);
+        }
+        finally
+        {
+            IsSyncing = false;
+            StateHasChanged();
+        }
     }
 
     private IEnumerable<CalendarDay> GetCalendarDays()
@@ -169,6 +355,9 @@
         // Batch load all events for the visible date range
         var allEventsInRange = CalendarService.GetEventsForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
         
+        // Get holidays for the current month
+        var allHolidaysInRange = HolidayService.GetHolidaysForMonth(CurrentDate.Year, CurrentDate.Month).ToList();
+        
         var days = new List<CalendarDay>();
         var currentDate = startDate;
         
@@ -176,12 +365,14 @@
         {
             var isCurrentMonth = currentDate.Month == CurrentDate.Month;
             var eventsForDay = allEventsInRange.Where(e => e.StartTime.Date == currentDate.Date).ToList();
+            var holidaysForDay = allHolidaysInRange.Where(h => h.Date.Date == currentDate.Date).ToList();
             
             days.Add(new CalendarDay
             {
                 Date = currentDate,
                 IsCurrentMonth = isCurrentMonth,
-                Events = eventsForDay
+                Events = eventsForDay,
+                Holidays = holidaysForDay
             });
             
             currentDate = currentDate.AddDays(1);
@@ -190,16 +381,18 @@
         return days;
     }
 
-    private void PreviousMonth()
+    private async Task PreviousMonth()
     {
         CurrentDate = CurrentDate.AddMonths(-1);
         SelectedDay = null;
+        await SyncWithGoogle();
     }
 
-    private void NextMonth()
+    private async Task NextMonth()
     {
         CurrentDate = CurrentDate.AddMonths(1);
         SelectedDay = null;
+        await SyncWithGoogle();
     }
 
     private void SelectDay(DateTime date)
@@ -227,7 +420,8 @@
             Description = evt.Description,
             StartTime = evt.StartTime,
             EndTime = evt.EndTime,
-            Color = evt.Color
+            Color = evt.Color,
+            GoogleEventId = evt.GoogleEventId
         };
         ShowEventModal = true;
     }
@@ -239,7 +433,7 @@
         ValidationError = string.Empty;
     }
 
-    private void SaveEvent()
+    private async Task SaveEvent()
     {
         if (string.IsNullOrWhiteSpace(EditingEvent.Title))
         {
@@ -257,23 +451,34 @@
 
         if (EditingEvent.Id == 0)
         {
-            CalendarService.AddEvent(EditingEvent);
+            await CalendarService.AddEventAsync(EditingEvent);
         }
         else
         {
-            CalendarService.UpdateEvent(EditingEvent);
+            await CalendarService.UpdateEventAsync(EditingEvent);
         }
         
         CloseModal();
     }
 
-    private void DeleteEvent()
+    private async Task DeleteEvent()
     {
         if (EditingEvent.Id != 0)
         {
-            CalendarService.DeleteEvent(EditingEvent.Id);
+            await CalendarService.DeleteEventAsync(EditingEvent.Id);
             CloseModal();
             SelectedDay = null;
         }
+    }
+
+    private string GetHolidayTypeBadgeColor(HolidayType type)
+    {
+        return type switch
+        {
+            HolidayType.Federal => "#0d6efd",
+            HolidayType.Religious => "#6f42c1",
+            HolidayType.Cultural => "#fd7e14",
+            _ => "#6c757d"
+        };
     }
 }
