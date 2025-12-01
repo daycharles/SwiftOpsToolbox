@@ -8,6 +8,26 @@
              Height="Auto" Width="Auto">
     <UserControl.Resources>
         <local:StringToBrushConverter x:Key="StringToBrushConverter" />
+        <Style x:Key="DayBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#e6e6e6" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="MinHeight" Value="80" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCurrentMonth}" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                    <Setter Property="Background" Value="#fff3cd" />
+                    <Setter Property="BorderBrush" Value="#ffc107" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#f8f9fa" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -45,7 +65,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#e6e6e6" BorderThickness="0.5" Background="White" Padding="8" MinHeight="80">
+                        <Border Style="{StaticResource DayBorderStyle}" MouseLeftButtonUp="DayBorder_MouseLeftButtonUp">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
