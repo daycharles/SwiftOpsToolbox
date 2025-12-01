@@ -205,6 +205,14 @@
     private void SelectDay(DateTime date)
     {
         SelectedDay = date;
+        // Automatically open the add event modal for the selected day
+        EditingEvent = new CalendarEvent
+        {
+            StartTime = date,
+            EndTime = date.AddHours(1),
+            Color = "#3788d8"
+        };
+        ShowEventModal = true;
     }
 
     private void ShowAddEventModal()
