@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using SwiftOpsToolbox.Models;
+using System.Windows.Input;
 
 namespace SwiftOpsToolbox.Views
 {
@@ -16,6 +17,7 @@ namespace SwiftOpsToolbox.Views
             public ObservableCollection<CalendarEvent> Events { get; set; } = new ObservableCollection<CalendarEvent>();
             public DateTime Date { get; set; }
             public bool IsCurrentMonth { get; set; }
+            public bool IsToday { get; set; }
         }
 
         public MonthGridView()
@@ -33,6 +35,9 @@ namespace SwiftOpsToolbox.Views
             set => SetValue(MonthTitleProperty, value);
         }
 
+        // Event fired when a day cell is clicked
+        public event EventHandler<DateTime>? DayClicked;
+
         public void SetMonth(DateTime date, IEnumerable<CalendarEvent> events)
         {
             // Set display title
@@ -48,7 +53,7 @@ namespace SwiftOpsToolbox.Views
             for (int i = 0; i < 42; i++)
             {
                 var d = gridStart.AddDays(i);
-                var vm = new DayVm { Day = d.Day, Date = d, IsCurrentMonth = d.Month == date.Month };
+                var vm = new DayVm { Day = d.Day, Date = d, IsCurrentMonth = d.Month == date.Month, IsToday = d.Date == DateTime.Today };
 
                 // include events that start/end across this date
                 var dayEvents = events.Where(ev => ev.StartDate.Date <= d.Date && ev.EndDate.Date >= d.Date);
@@ -57,6 +62,16 @@ namespace SwiftOpsToolbox.Views
             }
 
             DaysItems.ItemsSource = days;
+        }
+
+        // Handler for clicks from XAML day Border
+        private void DayBorder_MouseLeftButtonUp(object? sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border b && b.DataContext is DayVm vm)
+            {
+                DayClicked?.Invoke(this, vm.Date);
+                e.Handled = true;
+            }
         }
     }
 }

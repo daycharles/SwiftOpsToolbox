@@ -53,10 +53,56 @@ namespace SwiftOpsToolbox
                 next.Click += (s, e) => { _displayMonth = _displayMonth.AddMonths(1); RefreshMonthGrid(); };
             }
 
+            // wire month grid day click
+            if (FindName("MonthGrid") is Views.MonthGridView mg)
+            {
+                mg.DayClicked += MonthGrid_DayClicked;
+            }
+
             Loaded += (s, e) => RefreshMonthGrid();
 
             // Bind F1/Help command to open user documentation
             CommandBindings.Add(new CommandBinding(System.Windows.Input.ApplicationCommands.Help, (s, e) => OpenUserDocumentation_Click(s, (RoutedEventArgs?)e.Parameter)));
+        }
+
+        private void MonthGrid_DayClicked(object? sender, DateTime e)
+        {
+            // Open add event dialog pre-populated with selected date
+            var dlg = new Views.AddEventDialog();
+            dlg.Owner = this;
+            // set start/end dates via named controls using FindName on dialog's loaded visual tree
+            dlg.Loaded += (s, ev) =>
+            {
+                try
+                {
+                    var dpStart = dlg.FindName("DpStart") as System.Windows.Controls.DatePicker;
+                    var dpEnd = dlg.FindName("DpEnd") as System.Windows.Controls.DatePicker;
+                    if (dpStart != null) dpStart.SelectedDate = e.Date;
+                    if (dpEnd != null) dpEnd.SelectedDate = e.Date;
+                }
+                catch { }
+            };
+
+            var res = dlg.ShowDialog();
+            if (res == true && dlg.Result != null)
+            {
+                if (DataContext is ViewModels.MainViewModel vm)
+                {
+                    vm.CalendarEvents.Add(new Models.CalendarEvent
+                    {
+                        StartDate = dlg.Result.StartDate,
+                        EndDate = dlg.Result.EndDate,
+                        Time = dlg.Result.Time,
+                        Title = dlg.Result.Title,
+                        Description = dlg.Result.Description,
+                        Color = dlg.Result.Color
+                    });
+
+                    vm.RefreshSelectedDateEvents();
+                    vm.RefreshUpcomingEvents();
+                    RefreshMonthGrid();
+                }
+            }
         }
 
         private void CalendarEvents_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
